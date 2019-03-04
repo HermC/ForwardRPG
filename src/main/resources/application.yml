@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+  mvc:
+    static-path-pattern: /**
+  datasource:
+    url: jdbc:mysql://139.196.92.241:3306/forward?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+    username: root
+    password: mf1832225
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      connection-test-query: SELECT 1
+      validation-timeout: 6000
+      max-lifetime: 300000
+logging:
+  file: logs/forward.log
+  level:
+    root: info
+    edu.nju.usm.mapper: DEBUG
+n:
+  port: 7000
+  url: localhost

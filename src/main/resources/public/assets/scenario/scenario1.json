@@ -1,0 +1,16 @@
+{
+  "height": 40,
+  "layers": [
+    {
+      "data": [],
+      "height": 40,
+      "name": "layer",
+      "opacity": 1,
+      "type": "tilelayer",
+      "visible": true,
+      "width": 100,
+      "x": 0,
+      "y": 0
+    }
+  ]
+}
