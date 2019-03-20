@@ -19,10 +19,15 @@ spring:
       connection-test-query: SELECT 1
       validation-timeout: 6000
       max-lifetime: 300000
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 1000
+    database: 0
 logging:
   file: logs/forward.log
   level:
-    root: info
+    root: INFO
     edu.nju.usm.mapper: DEBUG
 n:
   port: 7000

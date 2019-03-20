@@ -14870,7 +14870,7 @@ Phaser.Game = function (width, height, renderer, parent, state, transparent, ant
     this.math = null;
 
     /**
-    * @property {Phaser.Net} net - Reference to the network class.
+    * @property {Phaser.Net} net - Reference to the netty class.
     */
     this.net = null;
 
@@ -90067,7 +90067,7 @@ Phaser.Video.prototype = {
      * This method will automatically handle a change in video dimensions, but if you try swapping to a different bitrate we've found it
      * cannot render the new video on iOS (desktop browsers cope better).
      *
-     * When the video source is changed the video file is requested over the network. Listen for the `onChangeSource` signal to know
+     * When the video source is changed the video file is requested over the netty. Listen for the `onChangeSource` signal to know
      * when the new video has downloaded enough content to be able to be played. Previous settings such as the volume and loop state
      * are adopted automatically by the new video.
      *

@@ -22640,7 +22640,7 @@ Phaser.Game = function (width, height, renderer, parent, state, transparent, ant
     this.math = null;
 
     /**
-    * @property {Phaser.Net} net - Reference to the network class.
+    * @property {Phaser.Net} net - Reference to the netty class.
     */
     this.net = null;
 

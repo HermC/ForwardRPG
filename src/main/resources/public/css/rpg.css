@@ -1,0 +1,66 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    width: 1100px;
+    height: 600px;
+    position: relative;
+    margin: auto;
+}
+.game-state {
+    width: 1100px;
+    height: 600px;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+#game {
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#state {
+    width: 300px;
+    height: 600px;
+    position: absolute;
+    top: 0;
+    left: 800px;
+    background-color: black;
+}
+#fight {
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+}
+#login {
+    width: 1100px;
+    height: 600px;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-wrapper {
+    width: 500px;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ededed;
+    box-shadow: 1px 1px 5px;
+}
+.login-wrapper h3 {
+    width: 100%;
+}
