@@ -13,9 +13,11 @@ public abstract class Creature implements Serializable {
     protected double y;
 
     protected int hp;   // 生命值
+
     protected int mp;   // 魔法值
     protected int ap;   // 行动点数
 
+    protected int level = 1;
     protected Bag bag;
     protected Buff buff = null;
 
@@ -24,10 +26,13 @@ public abstract class Creature implements Serializable {
 //        this.mp = mp;
 //        this.ap = ap;
 //    }
-    public Creature(int hp,int mp,int ap, Bag bag){
+
+
+    public Creature(int hp, int mp, int ap, int level, Bag bag) {
         this.hp = hp;
         this.mp = mp;
         this.ap = ap;
+        this.level = level;
         this.bag = bag;
     }
 
