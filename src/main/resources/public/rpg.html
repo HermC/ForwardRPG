@@ -12,53 +12,108 @@
 </head>
 <body>
 <div class="container">
-    <div class="game-state">
+    <div class="game-state" id="game-wrapper">
         <div class="game" id="game"></div>
         <div id="state">
 
         </div>
     </div>
-    <div id="login">
-        <div class="login-wrapper">
-            <h3>Forward RPG</h3>
-            <br>
-            <div id="login_form" class="form-horizontal">
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">角色名: </label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="username" placeholder="Username">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9">
-                        <button id="login_submit" type="button" class="btn btn-primary" style="float: right">启动</button>
-                    </div>
+    <!--<div id="login">-->
+        <!--<div class="login-wrapper">-->
+            <!--<h3>RPG</h3>-->
+            <!--<br>-->
+            <!--<div id="login_form" class="form-horizontal">-->
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 col-form-label">角色名: </label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<input type="text" class="form-control" id="username" placeholder="Username">-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 col-form-label"></label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<button id="login_submit" type="button" class="btn btn-primary" style="float: right">启动</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div id="choose_career_form" class="form-horizontal" style="display: none">-->
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 col-form-label">选择职业: </label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<select class="form-control" id="career">-->
+                            <!--<option value="战士">战士</option>-->
+                            <!--<option value="法师">法师</option>-->
+                            <!--<option value="刺客">刺客</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 col-form-label"></label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<button id="choose_submit" type="button" class="btn btn-primary" style="float: right">创建</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="game-state" id="fight-wrapper">
+        <div class="fight" id="fight">
+            <!--<button type="button" id="fight-close">close</button>-->
+            <div id="history-wrapper">
+                <h4 class="badge badge-secondary">战斗历史: </h4>
+                <div id="history">
+                    helsjfoaisf
                 </div>
             </div>
-            <div id="choose_career_form" class="form-horizontal" style="display: none">
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">选择职业: </label>
-                    <div class="col-sm-9">
-                        <select class="form-control" id="career">
-                            <option value="战士">战士</option>
-                            <option value="法师">法师</option>
-                            <option value="刺客">刺客</option>
-                        </select>
-                    </div>
+            <div id="skills-wrapper">
+                <div class="skill" id="skill1">
+                    技能1
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9">
-                        <button id="choose_submit" type="button" class="btn btn-primary" style="float: right">创建</button>
-                    </div>
+                <div class="skill" id="skill2">
+                    技能2
+                </div>
+                <div class="skill" id="skill3">
+                    技能3
+                </div>
+            </div>
+        </div>
+        <div id="fight-state">
+            <div id="enemy-state">
+                <div class="state">
+                    <span>名称:</span><span id="enemy-name"></span>
+                </div>
+                <div class="state">
+                    <span>HP:</span><span id="enemy-hp"></span>
+                </div>
+                <div class="state">
+                    <span>MP:</span><span id="enemy-mp"></span>
+                </div>
+                <div class="state">
+                    <span>AP:</span><span id="enemy-ap"></span>
+                </div>
+                <div class="state">
+                    <span>Buff:</span><span id="enemy-buff"></span>
+                </div>
+            </div>
+            <div id="player-state">
+                <div class="state">
+                    <span>名称:</span><span id="player-name"></span>
+                </div>
+                <div class="state">
+                    <span>HP:</span><span id="player-hp"></span>
+                </div>
+                <div class="state">
+                    <span>MP:</span><span id="player-mp"></span>
+                </div>
+                <div class="state">
+                    <span>AP:</span><span id="player-ap"></span>
+                </div>
+                <div class="state">
+                    <span>Buff:</span><span id="player-buff"></span>
                 </div>
             </div>
         </div>
     </div>
-    <!--<div class="fight" id="fight">-->
-        <!--<button type="button" id="fight-close">close</button>-->
-    <!--</div>-->
 </div>
 <script type="application/javascript" src="js/jquery/dist/jquery.min.js"></script>
 <script type="application/javascript" src="js/bootstrap/dist/js/bootstrap.min.js"></script>
