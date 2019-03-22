@@ -1,6 +1,11 @@
 package edu.nju.hermc.forward.game.creature;
 
+import edu.nju.hermc.forward.game.skill.Buff;
+import edu.nju.hermc.forward.game.skill.bag.Bag;
+import edu.nju.hermc.forward.game.skill.bag.Prop;
+
 import java.io.Serializable;
+
 
 public abstract class Creature implements Serializable {
 
@@ -11,7 +16,9 @@ public abstract class Creature implements Serializable {
     protected int mp;   // 魔法值
     protected int ap;   // 行动点数
 
-    protected int gold;
+    protected Bag bag;
+    protected Buff buff;
+
 
     public double getX() {
         return x;
@@ -53,11 +60,28 @@ public abstract class Creature implements Serializable {
         this.ap = ap;
     }
 
-    public int getGold() {
-        return gold;
+
+    public Buff getBuff() {
+        return buff;
     }
 
-    public void setGold(int gold) {
-        this.gold = gold;
+    public void setBuff(Buff buff) {
+        this.buff = buff;
     }
+
+    public Bag getBag() {
+        return bag;
+    }
+
+    public void setBag(Bag bag) {
+        this.bag = bag;
+    }
+
+    public boolean addBuff(Buff buff){
+        buff.setNextBuff(this.buff);
+        this.buff = buff;
+        return true;
+    }
+
+
 }
