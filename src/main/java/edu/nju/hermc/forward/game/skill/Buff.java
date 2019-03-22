@@ -26,6 +26,11 @@ public abstract class Buff implements Damage{
     }
 
 
+    public int caculateDamage(int damage){
+        return 0;
+    }
+
+
 
 
 }

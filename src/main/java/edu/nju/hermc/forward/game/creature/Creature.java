@@ -17,8 +17,19 @@ public abstract class Creature implements Serializable {
     protected int ap;   // 行动点数
 
     protected Bag bag;
-    protected Buff buff;
+    protected Buff buff = null;
 
+//    public Creature(int hp,int mp,int ap){
+//        this.hp = hp;
+//        this.mp = mp;
+//        this.ap = ap;
+//    }
+    public Creature(int hp,int mp,int ap, Bag bag){
+        this.hp = hp;
+        this.mp = mp;
+        this.ap = ap;
+        this.bag = bag;
+    }
 
     public double getX() {
         return x;
