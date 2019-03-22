@@ -14,6 +14,9 @@ public class Constants {
     public static final int FIGHT_INIT = 2001;
     public static final int FIGHT_ACTING = 2002;
 
+    public static final int STATE = 3000;
 
+    public static final int STRENGTHEN = 4000;
+    public static final int STRENGTHEN_FAILED = 4001;
 
 }

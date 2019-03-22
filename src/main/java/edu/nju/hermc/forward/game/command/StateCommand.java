@@ -3,9 +3,8 @@ package edu.nju.hermc.forward.game.command;
 import lombok.Data;
 
 @Data
-public class Command {
+public class StateCommand {
 
-    private int code;
-    private Object data;
+
 
 }

@@ -198,6 +198,12 @@
                 case 1000:
                     refreshPosition(msg['data']);
                     break;
+                case 3000:
+                    initPlayerState();
+                    break;
+                case 4000:
+
+                    break;
                 default:
                     break;
             }
@@ -229,6 +235,10 @@
                 data: career
             }));
         });
+    }
+
+    function initPlayerState() {
+
     }
 
     function initFight() {
@@ -309,5 +319,5 @@
 
     initSocket();
     initListener();
-    // initGame();
+    initGame();
 }());

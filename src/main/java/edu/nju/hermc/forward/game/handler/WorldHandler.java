@@ -29,6 +29,12 @@ public class WorldHandler extends SimpleChannelInboundHandler<TextWebSocketFrame
     private AuthHandler authHandler;
     @Autowired
     private MoveHandler moveHandler;
+    @Autowired
+    private FightHandler fightHandler;
+    @Autowired
+    private StateHandler stateHandler;
+    @Autowired
+    private StrengthenHandler strengthenHandler;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
@@ -46,6 +52,13 @@ public class WorldHandler extends SimpleChannelInboundHandler<TextWebSocketFrame
                 moveHandler.move(ctx.channel(), command);
                 break;
             case Constants.FIGHT:
+                fightHandler.fight(ctx.channel(), command);
+                break;
+            case Constants.STATE:
+                stateHandler.getState(ctx.channel(), command);
+                break;
+            case Constants.STRENGTHEN:
+                strengthenHandler.update(ctx.channel(), command);
                 break;
             default:
                 logger.info("无效指令: " + command);
