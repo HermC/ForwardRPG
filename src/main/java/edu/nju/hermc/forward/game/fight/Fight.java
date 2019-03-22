@@ -21,7 +21,6 @@ public class Fight {
             return -10000;
         }else {
 
-            int sourceDamage = skill.getSkillValue();
             if (skill.getType()){
                 if(skill.getSkillValue() > 0){
                     creature[creatureid].addBuff(skill.getSkillBuff());
@@ -32,14 +31,18 @@ public class Fight {
                 return 0;
             }else {
                 int source = skill.getSkillValue();
+                int damage1 = source;
 
-                int damage1 = creature[creatureid].getBuff().caculateDamage(source);
+                if (creature[creatureid].getBuff() != null) {
+                    damage1 = creature[creatureid].getBuff().caculateDamage(source);
+                }
 
-                damage1 = creature[creatureid].getBag().getMyProp().caculateDamage(damage1);
-
-                damage1 = creature[(creatureid+1)%2].getBuff().caculateDamage(damage1);
-
-
+                if (creature[creatureid].getBag().getMyProp()!= null) {
+                    damage1 = creature[creatureid].getBag().getMyProp().caculateDamage(damage1);
+                }
+                if (creature[(creatureid+1)%2].getBuff() != null) {
+                    damage1 = creature[(creatureid + 1) % 2].getBuff().caculateDamage(damage1);
+                }
                 return damage1;
             }
 
