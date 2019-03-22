@@ -1,10 +1,12 @@
 package edu.nju.hermc.forward.game.creature;
 
 import edu.nju.hermc.forward.game.skill.Buff;
+import edu.nju.hermc.forward.game.skill.Skill;
 import edu.nju.hermc.forward.game.skill.bag.Bag;
 import edu.nju.hermc.forward.game.skill.bag.Prop;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 public abstract class Creature implements Serializable {
@@ -13,14 +15,18 @@ public abstract class Creature implements Serializable {
     protected double y;
 
     protected int hp;   // 生命值
-
     protected int mp;   // 魔法值
     protected int ap;   // 行动点数
+
+    protected int current_hp;   // 当前生命值
+    protected int current_mp;   // 当前魔法值
+    protected int current_ap;   // 当前行动点数
 
     protected int level = 1;
     protected Bag bag;
     protected Buff buff = null;
 
+    protected List<Skill> skillList;
 //    public Creature(int hp,int mp,int ap){
 //        this.hp = hp;
 //        this.mp = mp;
@@ -28,12 +34,17 @@ public abstract class Creature implements Serializable {
 //    }
 
 
-    public Creature(int hp, int mp, int ap, int level, Bag bag) {
+    public Creature(int hp, int mp, int ap, int level, Bag bag, List<Skill> skillList) {
         this.hp = hp;
         this.mp = mp;
         this.ap = ap;
+        this.current_hp = hp;
+        this.current_mp = mp;
+        this.current_ap = ap;
+
         this.level = level;
         this.bag = bag;
+        this.skillList = skillList;
     }
 
     public double getX() {
@@ -76,6 +87,45 @@ public abstract class Creature implements Serializable {
         this.ap = ap;
     }
 
+    public int getCurrent_hp() {
+        return current_hp;
+    }
+
+    public void setCurrent_hp(int current_hp) {
+        this.current_hp = current_hp;
+    }
+
+    public int getCurrent_mp() {
+        return current_mp;
+    }
+
+    public void setCurrent_mp(int current_mp) {
+        this.current_mp = current_mp;
+    }
+
+    public int getCurrent_ap() {
+        return current_ap;
+    }
+
+    public void setCurrent_ap(int current_ap) {
+        this.current_ap = current_ap;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public List<Skill> getSkillList() {
+        return skillList;
+    }
+
+    public void setSkillList(List<Skill> skillList) {
+        this.skillList = skillList;
+    }
 
     public Buff getBuff() {
         return buff;
