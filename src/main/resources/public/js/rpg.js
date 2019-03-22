@@ -231,6 +231,40 @@
         });
     }
 
+    function initFight() {
+        $('#fight-wrapper').show();
+        setSkills();
+        setEnemyState();
+        setPlayerState();
+    }
+
+    function setHistory(text) {
+        var history = $('#history').html();
+        $('#history').html(text + '<br>' + history);
+    }
+
+    function setSkills() {
+        $('#skill1').html();
+        $('#skill2').html();
+        $('#skill3').html();
+    }
+
+    function setEnemyState(state) {
+        $('#enemy-name').html();
+        $('#enemy-hp').html();
+        $('#enemy-mp').html();
+        $('#enemy-ap').html();
+        $('#enemy-buff').html();
+    }
+
+    function setPlayerState(state) {
+        $('#player-name').html();
+        $('#player-hp').html();
+        $('#player-mp').html();
+        $('#player-ap').html();
+        $('#player-buff').html();
+    }
+
     function chooseCareer(msg) {
         username = msg['data'];
         $('#login_form').hide();
