@@ -2,9 +2,11 @@ package edu.nju.hermc.forward.game.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.nju.hermc.forward.game.command.Command;
+import edu.nju.hermc.forward.game.creature.Creature;
+import edu.nju.hermc.forward.game.creature.PlayerFactory;
 import edu.nju.hermc.forward.game.utils.Constants;
-import edu.nju.hermc.forward.mapper.UserMapper;
-import edu.nju.hermc.forward.model.User;
+import edu.nju.hermc.forward.mapper.PlayerMapper;
+import edu.nju.hermc.forward.model.PlayerInfo;
 import edu.nju.hermc.forward.utils.RedisUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -23,9 +25,9 @@ public class AuthHandler {
     private static final ObjectMapper parser = new ObjectMapper();
 
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
     private RedisUtils redisUtils;
+    @Autowired
+    private PlayerMapper playerMapper;
 
     public void authorization(Channel cl, Command command) throws Exception {
         switch (command.getCode()) {
@@ -41,23 +43,26 @@ public class AuthHandler {
     }
 
     public void login(Channel cl, Command wrapper) throws Exception {
-        User user = parser.readValue(parser.writeValueAsString(wrapper.getData()), User.class);
+        PlayerInfo user = parser.readValue(parser.writeValueAsString(wrapper.getData()), PlayerInfo.class);
         if (redisUtils.hasKey(user.getUsername())) {
             wrapper.setCode(Constants.AUTHORIZATION_ACTIVE);
             cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
             return;
         }
-        User realUser = userMapper.findByUsername(user.getUsername());
+        PlayerInfo realUser = playerMapper.find(user.getUsername());
         if (realUser == null) {
             wrapper.setCode(Constants.AUTHORIZATION_CHOOSE_CAREER);
             redisUtils.set(cl.id().asLongText(), user.getUsername());
             cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
             return;
         }
-        // TODO: 加载数据库用户
 
-        redisUtils.set(user.getUsername(), cl.id().asLongText());
+        redisUtils.hset(user.getUsername(), Creature.class.getName(), PlayerFactory.getPlayer(realUser));
         redisUtils.set(cl.id().asLongText(), user.getUsername());
+
+        wrapper.setCode(Constants.AUTHORIZATION_SUCCESS);
+        wrapper.setData(realUser);
+        cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
     }
 
     public void chooseCareer(Channel cl, Command wrapper) throws Exception {
@@ -74,14 +79,36 @@ public class AuthHandler {
             return;
         }
 
-        // TODO: 创建并存储用户
         String username = (String) userData;
-        System.out.println(username);
-        System.out.println(career);
+        PlayerInfo info = PlayerFactory.getPlayerInfo(username, career);
+        playerMapper.insert(info);
+
+        redisUtils.del(username);
+        redisUtils.hset(username, Creature.class.getName(), PlayerFactory.getPlayer(info));
+
+        wrapper.setCode(Constants.AUTHORIZATION_SUCCESS);
+        wrapper.setData(PlayerFactory.getPlayer(info));
+        cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+        return;
     }
 
-    public void loseAuth(Channel cl) {
+    public void loseAuth(Channel cl) throws Exception {
+        String username = (String) redisUtils.get(cl.id().asLongText());
+        if (username == null) {
+            return;
+        }
+        Creature player = (Creature) redisUtils.hget(username, Creature.class.getName());
+        PlayerInfo info = playerMapper.find(username);
+        info.setX(player.getX());
+        info.setY(player.getY());
+        info.setLevel(player.getLevel());
+        info.setHp(player.getHp());
+        info.setMp(player.getMp());
+        info.setAp(player.getAp());
+        playerMapper.update(info);
 
+        redisUtils.del(username);
+        redisUtils.del(cl.id().asLongText());
     }
 
 }

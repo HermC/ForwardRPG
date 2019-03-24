@@ -1,16 +1,20 @@
 package edu.nju.hermc.forward.game.skill.bag;
 
-public class Bag {
+import java.io.Serializable;
+
+public class Bag implements Serializable {
 
     protected Prop myProp = null;
 
     protected int coin;
 
-    public Bag(int coin){
+    public Bag() {}
+
+    public Bag(int coin) {
         this.coin = coin;
     }
 
-    public Bag(int coin,Prop myProp){
+    public Bag(int coin, Prop myProp) {
         this.coin = coin;
         this.myProp = myProp;
     }

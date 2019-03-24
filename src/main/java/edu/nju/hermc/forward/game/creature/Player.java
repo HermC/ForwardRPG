@@ -10,6 +10,8 @@ public class Player extends Creature{
 
     protected String playerID;
 
+    public Player() {}
+
     public Player(int hp, int mp, int ap, int level, Bag bag, String playerID, List<Skill> skillList) {
         super(hp, mp, ap, level, bag,skillList);
         this.playerID = playerID;

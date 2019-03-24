@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Assassin extends Player {
 
-
+    public Assassin() { }
 
     public Assassin(int hp, int mp, int ap, int level, Bag bag, String playerID,List<Skill> skillList) {
         super(hp, mp, ap, level, bag, playerID,skillList);

@@ -33,6 +33,9 @@ public abstract class Creature implements Serializable {
 //        this.ap = ap;
 //    }
 
+    public Creature() {
+    }
+
 
     public Creature(int hp, int mp, int ap, int level, Bag bag, List<Skill> skillList) {
         this.hp = hp;
@@ -143,7 +146,7 @@ public abstract class Creature implements Serializable {
         this.bag = bag;
     }
 
-    public boolean addBuff(Buff buff){
+    public boolean addBuff(Buff buff) {
         buff.setNextBuff(this.buff);
         this.buff = buff;
         return true;

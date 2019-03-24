@@ -10,11 +10,8 @@ public class PlayerInfo {
     private double x;
     private double y;
     private int hp;
-    private int mhp;
     private int mp;
-    private int mmp;
     private int ap;
-    private int map;
 
     private String career;
 

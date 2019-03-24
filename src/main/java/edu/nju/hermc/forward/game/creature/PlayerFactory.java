@@ -1,9 +1,45 @@
 package edu.nju.hermc.forward.game.creature;
 
+import edu.nju.hermc.forward.game.skill.bag.Bag;
+import edu.nju.hermc.forward.model.PlayerInfo;
+
+import java.util.ArrayList;
+
 public class PlayerFactory {
 
-    public static Creature getPlayer() {
-        return null;
+    public static Creature getPlayer(PlayerInfo info) {
+        switch (info.getCareer()) {
+            case "assassin":
+                Creature assassin =  new Assassin(info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
+                assassin.setX(info.getX());
+                assassin.setY(info.getY());
+                return assassin;
+            case "mage":
+                Creature mage = new Mage(info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
+                mage.setX(info.getX());
+                mage.setY(info.getY());
+                return mage;
+            case "warrior":
+                Creature warrior =  new Warrior(info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
+                warrior.setX(info.getX());
+                warrior.setY(info.getY());
+                return warrior;
+            default:
+                return null;
+        }
+    }
+
+    public static PlayerInfo getPlayerInfo(String username, String career) {
+        PlayerInfo info = new PlayerInfo();
+        info.setUsername(username);
+        info.setCareer(career);
+        info.setHp(50);
+        info.setMp(50);
+        info.setAp(50);
+        info.setLevel(1);
+        info.setX(80);
+        info.setY(32);
+        return info;
     }
 
 }

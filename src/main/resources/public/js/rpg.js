@@ -237,6 +237,11 @@
         });
     }
 
+    function initPlayer(msg) {
+        var data = msg['data'];
+        player.reset(data['x'], data['y']);
+    }
+
     function initPlayerState() {
 
     }
@@ -287,6 +292,11 @@
             case 4:
                 chooseCareer(msg);
                 break;
+            case 1:
+                initGame();
+                $('#login').hide();
+                initPlayer(msg);
+                break;
             default:
                 break;
         }
@@ -319,5 +329,5 @@
 
     initSocket();
     initListener();
-    initGame();
+    // initGame();
 }());

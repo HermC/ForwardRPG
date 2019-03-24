@@ -1,6 +1,8 @@
 package edu.nju.hermc.forward.game.skill;
 
-public abstract class Skill implements Damage{
+import java.io.Serializable;
+
+public abstract class Skill implements Damage, Serializable {
 
     protected String name;
     protected String decription;
@@ -61,7 +63,7 @@ public abstract class Skill implements Damage{
         this.level = level;
     }
 
-    public Skill(String skillName, String skillDecription, int damageValue, boolean buff, Buff skillBuff, int level){
+    public Skill(String skillName, String skillDecription, int damageValue, boolean buff, Buff skillBuff, int level) {
         this.name = skillName;
         this.decription = skillDecription;
         this.skillValue = damageValue;
@@ -71,7 +73,7 @@ public abstract class Skill implements Damage{
     }
 
 
-    public boolean getType(){
+    public boolean getType() {
         return this.isBuff;
     }
 
