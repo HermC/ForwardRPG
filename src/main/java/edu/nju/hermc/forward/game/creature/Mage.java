@@ -30,4 +30,10 @@ public class Mage extends Player {
         this.career = "法师";
     }
 
+
+    public void levelup(){
+        this.level = this.level + 1;
+        this.hp = this.hp * 2;
+        this.mp = this.mp * 2;
+    }
 }

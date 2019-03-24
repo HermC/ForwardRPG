@@ -32,5 +32,10 @@ public class Warrior extends Player {
         this.career = "战士";
     }
 
+    public void levelup(){
+        this.level = this.level + 1;
+        this.hp = this.hp * 3;
+    }
+
 }
 

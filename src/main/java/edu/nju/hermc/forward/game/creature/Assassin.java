@@ -34,5 +34,9 @@ public class Assassin extends Player {
         this.skillList = skillList;
         this.career = "刺客";
     }
-
+    public void levelup(){
+        this.level = this.level + 1;
+        this.hp = this.hp * 2;
+        this.ap = this.ap * 2;
+    }
 }

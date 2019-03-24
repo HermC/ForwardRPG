@@ -34,4 +34,16 @@ public class Bag implements Serializable {
     public void setCoin(int coin) {
         this.coin = coin;
     }
+
+    public String levelupProp(){
+        int nowLevel = this.myProp.getLevel();
+
+        int needCoin = nowLevel * 100;
+        if(this.coin >= needCoin){
+            this.myProp.setLevel(nowLevel + 1);
+            return "升级成功，当前等级为" + String.valueOf(this.myProp.getLevel());
+        }else {
+            return "升级失败，金币不足";
+        }
+    }
 }

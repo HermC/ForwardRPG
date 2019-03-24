@@ -82,8 +82,15 @@ public class Fight {
         this.fightId = fightId;
     }
 
-    public int autoFight(){
-        return 0;
+    public String autoFight(){
+
+        if(creature[1] instanceof Enemy){
+            int damage1 = creature[1].getSkillList().get(0).caculateDamage(0);
+            creature[0].setCurrent_hp(creature[0].getCurrent_hp() - damage1);
+            return "敌人对你造成" + String.valueOf(damage1) + "点伤害";
+        }
+        return null;
+
     }
 
     public boolean isEnd(){
