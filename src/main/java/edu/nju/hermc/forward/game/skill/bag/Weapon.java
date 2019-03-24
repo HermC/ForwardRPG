@@ -8,6 +8,6 @@ public class Weapon extends Prop {
 
     @Override
     public int caculateDamage(int damage) {
-        return 0;
+        return damage + this.getLevel();
     }
 }

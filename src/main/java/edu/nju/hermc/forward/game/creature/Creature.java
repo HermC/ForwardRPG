@@ -190,4 +190,8 @@ public abstract class Creature implements Serializable {
             return true;
         }
     }
+
+//    public String toString(){
+//
+//    }
 }

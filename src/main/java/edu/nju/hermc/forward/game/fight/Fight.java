@@ -23,10 +23,11 @@ public class Fight {
     }
 
     public String playerFight(String objid , Skill skill){
-
+        System.out.println(creature[turnID].getObjectId().equals(objid));
         if ( !creature[turnID].getObjectId().equals(objid) ){
             return null;
         }else {
+            System.out.println("in");
             boolean hasConsume = creature[turnID].consume(skill);
             if(hasConsume) {
                 if (skill.getType()) {
@@ -45,15 +46,19 @@ public class Fight {
                 } else {
                     int source = skill.caculateDamage(0);
                     int damage1 = source;
+                    System.out.println(damage1);
 
                     if (creature[turnID].getBuff() != null) {
+                        System.out.println("my buff");
                         damage1 = creature[turnID].getBuff().caculateDamage(source);
                     }
 
                     if (creature[turnID].getBag().getMyProp() != null) {
+                        System.out.println("my weapon");
                         damage1 = creature[turnID].getBag().getMyProp().caculateDamage(damage1);
                     }
                     if (creature[(turnID + 1) % 2].getBuff() != null) {
+                        System.out.println("opsite buff");
                         damage1 = creature[(turnID + 1) % 2].getBuff().caculateDamage(damage1);
                     }
                     creature[(turnID + 1) % 2].setCurrent_hp(creature[(turnID + 1) % 2].getCurrent_hp() - damage1);
@@ -62,6 +67,7 @@ public class Fight {
                             + "施加了" + skill.getName() + "，造成了" + String.valueOf(damage1) + "点伤害";
                     turnID = (turnID + 1) % 2;
 
+                    turnID = (turnID + 1) % 2;
                     return result_string;
                 }
             }else {
@@ -89,6 +95,7 @@ public class Fight {
             creature[0].setCurrent_hp(creature[0].getCurrent_hp() - damage1);
             turnID = (turnID + 1) % 2;
             return "敌人对你造成" + String.valueOf(damage1) + "点伤害";
+
         }
         return null;
 

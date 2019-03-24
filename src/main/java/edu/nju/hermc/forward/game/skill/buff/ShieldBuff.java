@@ -14,7 +14,10 @@ public class ShieldBuff extends Buff {
     }
 
     public int caculateDamage(int damage){
-
-        return this.nextBuff.caculateDamage(Math.max(damage - buffValue,0));
+        if (this.nextBuff != null){
+            return this.nextBuff.caculateDamage(Math.max(damage - buffValue,0));
+        }else {
+            return Math.max(damage - buffValue,0);
+        }
     }
 }

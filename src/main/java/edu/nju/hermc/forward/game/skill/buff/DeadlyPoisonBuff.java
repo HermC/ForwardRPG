@@ -17,7 +17,10 @@ public class DeadlyPoisonBuff extends Buff{
 
 
     public int caculateDamage(int damage){
-
-        return this.nextBuff.caculateDamage(damage + buffValue);
+        if (this.nextBuff != null) {
+            return this.nextBuff.caculateDamage(damage + buffValue);
+        }else {
+            return  damage + buffValue;
+        }
     }
 }

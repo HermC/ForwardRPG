@@ -21,7 +21,7 @@ public class Assassin extends Player {
     public Assassin(String objectId, int hp, int mp, int ap, int level, Bag bag) {
         super(objectId, hp, mp, ap, level, bag);
 
-        int skilllevel  = level / 10;
+        int skilllevel  = level / 10 + 1;
         ArrayList<Skill> skillList = new ArrayList<>();
         Assassination assassination0 = new Assassination(skilllevel);
         DeadlyPoison deadlyPoison0 = new DeadlyPoison(skilllevel);
