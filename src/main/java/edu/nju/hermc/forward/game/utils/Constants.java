@@ -15,6 +15,7 @@ public class Constants {
     public static final int FIGHT_ACTING = 2002;
     public static final int FIGHT_INIT_FAILED = 2003;
     public static final int FIGHT_NOT_YOUR_TURN = 2004;
+    public static final int FIGHT_END = 2005;
 
     public static final int STATE = 3000;
 

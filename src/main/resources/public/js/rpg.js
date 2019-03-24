@@ -282,10 +282,16 @@
             case 2003:
                 break;
             case 2002:
+                setFightInfo(msg);
                 break;
             case 2001:
                 initFight(msg);
                 break;
+            case 2004:
+                setHistory('不是你的回合!');
+                break;
+            case 2005:
+
         }
     }
 
@@ -302,6 +308,17 @@
 
         $('#history').html('');
         setHistory('与[' + data['otherSide']['objectId'] + ']的战斗开始了!');
+    }
+
+    function endFight(msg) {
+        var data = msg['data'];
+    }
+
+    function setFightInfo(msg) {
+        var data = msg['data'];
+        setEnemyState(data['otherSide']);
+        setPlayerState(data['ourSide']);
+        setHistory(data['result']);
     }
 
     function setHistory(text) {
@@ -325,7 +342,7 @@
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
-                    skillId: 1
+                    skillId: 0
                 }
             }));
         });
@@ -336,7 +353,7 @@
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
-                    skillId: 2
+                    skillId: 1
                 }
             }));
         });
@@ -347,7 +364,7 @@
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
-                    skillId: 3
+                    skillId: 2
                 }
             }));
         });

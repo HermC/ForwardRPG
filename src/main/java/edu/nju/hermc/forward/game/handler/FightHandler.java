@@ -95,7 +95,9 @@ public class FightHandler {
             String cl2 = WORLD.getClients().get(target.getObjectId());
             for (Channel c: WorldHandler.clients) {
                 if (c.id().asLongText().equals(cl2)) {
-                    c.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(fi2)));
+                    wrapper.setCode(Constants.FIGHT_INIT);
+                    wrapper.setData(fi2);
+                    c.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
                     break;
                 }
             }
@@ -128,14 +130,79 @@ public class FightHandler {
         }
 
         Creature[] creatures = fight.getCreature();
+        Creature ourSide = creatures[0].getObjectId().equals(username) ? creatures[0] : creatures[1];
+        Creature otherSide = creatures[0].getObjectId().equals(username) ? creatures[1] : creatures[0];
+
+        FightResultCommand result = new FightResultCommand();
+        result.setFightId(fight.getFightId());
+        result.setOurSide(ourSide);
+        result.setOtherSide(otherSide);
+        result.setResult(r);
+
+        if (fight.isEnd()) {
+            wrapper.setCode(Constants.FIGHT_END);
+            wrapper.setData(result);
+            cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+
+            result.setOurSide(otherSide);
+            result.setOtherSide(ourSide);
+            wrapper.setData(result);
+
+            String cl2 = WORLD.getClients().get(otherSide.getObjectId());
+            for (Channel c: WorldHandler.clients) {
+                if (c.id().asLongText().equals(cl2)) {
+                    c.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+                    break;
+                }
+            }
+
+            this.refreshCreature(ourSide);
+            this.refreshCreature(otherSide);
+            return;
+        }
 
         if (creatures[1] instanceof Enemy) {
+            r += "<br>" + fight.autoFight();
 
+            result.setResult(r);
+
+            if (fight.isEnd()) {
+                wrapper.setCode(Constants.FIGHT_END);
+                wrapper.setData(result);
+                cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+            } else {
+                wrapper.setCode(Constants.FIGHT_ACTING);
+                wrapper.setData(result);
+                cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+            }
         } else {
-            FightResultCommand result = new FightResultCommand();
-            result.setFightId(fight.getFightId());
-            result.setOurSide(creatures[0].getObjectId().equals(username) ? creatures[0] : creatures[1]);
+            wrapper.setCode(Constants.FIGHT_ACTING);
+            cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+
+            result.setOurSide(otherSide);
+            result.setOtherSide(ourSide);
+            wrapper.setData(result);
+
+            String cl2 = WORLD.getClients().get(otherSide.getObjectId());
+            for (Channel c: WorldHandler.clients) {
+                if (c.id().asLongText().equals(cl2)) {
+                    c.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+                    break;
+                }
+            }
         }
+        this.refreshCreature(ourSide);
+        this.refreshCreature(otherSide);
+    }
+
+    private void refreshCreature(Creature c) {
+        World WORLD = World.getInstance();
+
+        c.setCurrent_hp(c.getHp());
+        c.setCurrent_mp(c.getMp());
+        c.setCurrent_ap(c.getAp());
+
+        WORLD.getCreatures().put(c.getObjectId(), c);
     }
 
 }

@@ -24,7 +24,7 @@ public class Fight {
 
     public String playerFight(String objid , Skill skill){
 
-        if ( creature[turnID].getObjectId().equals(objid) ){
+        if ( !creature[turnID].getObjectId().equals(objid) ){
             return null;
         }else {
             boolean hasConsume = creature[turnID].consume(skill);
@@ -56,11 +56,11 @@ public class Fight {
                     if (creature[(turnID + 1) % 2].getBuff() != null) {
                         damage1 = creature[(turnID + 1) % 2].getBuff().caculateDamage(damage1);
                     }
-                    turnID = (turnID + 1) % 2;
                     creature[(turnID + 1) % 2].setCurrent_hp(creature[(turnID + 1) % 2].getCurrent_hp() - damage1);
                     String result_string = "";
                     result_string += creature[turnID].getObjectId() + "对" + creature[(turnID + 1) % 2].getObjectId()
                             + "施加了" + skill.getName() + "，造成了" + String.valueOf(damage1) + "点伤害";
+                    turnID = (turnID + 1) % 2;
 
                     return result_string;
                 }
@@ -87,6 +87,7 @@ public class Fight {
         if(creature[1] instanceof Enemy){
             int damage1 = creature[1].getSkillList().get(0).caculateDamage(0);
             creature[0].setCurrent_hp(creature[0].getCurrent_hp() - damage1);
+            turnID = (turnID + 1) % 2;
             return "敌人对你造成" + String.valueOf(damage1) + "点伤害";
         }
         return null;
