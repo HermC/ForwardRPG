@@ -320,36 +320,36 @@
 
         $('#skill1').on('click', function() {
             if (!fightId) return;
-            socket.send({
-                code: 2000,
+            socket.send(JSON.stringify({
+                code: 2002,
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
                     skillId: $(this).find('input').val()
                 }
-            });
+            }));
         });
         $('#skill2').on('click', function() {
             if (!fightId) return;
-            socket.send({
-                code: 2000,
+            socket.send(JSON.stringify({
+                code: 2002,
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
                     skillId: $(this).find('input').val()
                 }
-            });
+            }));
         });
         $('#skill3').on('click', function() {
             if (!fightId) return;
-            socket.send({
-                code: 2000,
+            socket.send(JSON.stringify({
+                code: 2002,
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
                     skillId: $(this).find('input').val()
                 }
-            });
+            }));
         });
     }
 

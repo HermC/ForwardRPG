@@ -4,12 +4,13 @@ import edu.nju.hermc.forward.game.creature.Creature;
 import edu.nju.hermc.forward.game.creature.Enemy;
 import edu.nju.hermc.forward.game.fight.Fight;
 import edu.nju.hermc.forward.game.skill.bag.Bag;
-import edu.nju.hermc.forward.utils.RedisUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component

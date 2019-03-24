@@ -3,18 +3,13 @@ package edu.nju.hermc.forward.game.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.nju.hermc.forward.game.command.Command;
 import edu.nju.hermc.forward.game.command.MoveCommand;
-import edu.nju.hermc.forward.game.creature.Creature;
 import edu.nju.hermc.forward.game.creature.Player;
 import edu.nju.hermc.forward.game.map.World;
-import edu.nju.hermc.forward.mapper.PlayerMapper;
-import edu.nju.hermc.forward.utils.RedisUtils;
-import edu.nju.hermc.forward.utils.SerializeUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
