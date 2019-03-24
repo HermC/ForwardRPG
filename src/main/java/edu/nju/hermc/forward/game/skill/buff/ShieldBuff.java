@@ -6,4 +6,15 @@ public class ShieldBuff extends Buff {
 //    public ShieldBuff(String buffName, String buffDescription, Buff nextBuff) {
 //        super(buffName, buffDescription, nextBuff);
 //    }
+
+
+    public ShieldBuff(int level){
+        this.name = "伤害减免";
+        this.buffValue = 2 * level;
+    }
+
+    public int caculateDamage(int damage){
+
+        return this.nextBuff.caculateDamage(Math.max(damage - buffValue,0));
+    }
 }

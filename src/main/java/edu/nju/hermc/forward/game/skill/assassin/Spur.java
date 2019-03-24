@@ -9,8 +9,22 @@ public class Spur extends Skill {
         super(skillName, skillDecription, damageValue, buff, skillBuff, level, hp, mp, sp);
     }
 
+
+    public Spur(int level){
+        this.name = "影袭";
+        this.decription = "";
+        this.skillValue = 1;
+        this.isBuff = false;
+        this.skillBuff = null;
+        this.level = level;
+        this.mp = 0;
+        this.ap = 2;
+        this.hp = 0;
+
+    }
+
     @Override
     public int caculateDamage(int damage) {
-        return 0;
+        return damage + skillValue * level;
     }
 }

@@ -11,9 +11,21 @@ public class Assassination extends Skill {
     }
 
 
+    public Assassination(int level){
+        this.name = "刺杀";
+        this.decription = "";
+        this.skillValue = 2;
+        this.isBuff = false;
+        this.skillBuff = null;
+        this.level = level;
+        this.mp = 0;
+        this.ap = 4;
+        this.hp = 0;
 
+    }
     @Override
     public int caculateDamage(int damage) {
-        return 0;
+
+        return damage + skillValue * level;
     }
 }

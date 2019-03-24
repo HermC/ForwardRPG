@@ -8,4 +8,16 @@ public class DeadlyPoisonBuff extends Buff{
 //    }
 
 
+
+    public DeadlyPoisonBuff(int level){
+        this.name = "致命毒药";
+        this.buffValue = 2 * level;
+
+    }
+
+
+    public int caculateDamage(int damage){
+
+        return this.nextBuff.caculateDamage(damage + buffValue);
+    }
 }

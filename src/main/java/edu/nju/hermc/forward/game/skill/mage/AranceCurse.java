@@ -14,17 +14,17 @@ public class AranceCurse extends Skill{
     public AranceCurse(int level){
         this.name = "奥术诅咒";
         this.decription = "";
-        this.skillValue = 2;
+        this.skillValue = -2;
         this.isBuff = true;
         this.skillBuff = new AranceCurseBuff(level);
         this.level = level;
         this.mp = 4;
-        this.sp = 0;
+        this.ap = 0;
         this.hp = 0;
 
     }
     @Override
     public int caculateDamage(int damage) {
-        return 0;
+        return damage;
     }
 }
