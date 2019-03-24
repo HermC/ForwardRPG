@@ -7,17 +7,16 @@ import edu.nju.hermc.forward.game.command.FightInfoCommand;
 import edu.nju.hermc.forward.game.command.FightInitCommand;
 import edu.nju.hermc.forward.game.creature.Creature;
 import edu.nju.hermc.forward.game.creature.Player;
+import edu.nju.hermc.forward.game.creature.state.MoveState;
+import edu.nju.hermc.forward.game.creature.state.State;
 import edu.nju.hermc.forward.game.fight.Fight;
 import edu.nju.hermc.forward.game.map.World;
 import edu.nju.hermc.forward.game.utils.Constants;
-import edu.nju.hermc.forward.model.User;
-import edu.nju.hermc.forward.utils.RedisUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -61,14 +60,19 @@ public class FightHandler {
             return;
         }
 
+        State save = target.getState();
         if (!target.getState().doCollide(target)) {
             wrapper.setCode(Constants.FIGHT_INIT_FAILED);
             cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
             return;
         }
 
-        initiator.getState().doCollide(initiator);
-
+        if (!initiator.getState().doCollide(initiator)) {
+            target.setState(save);
+            wrapper.setCode(Constants.FIGHT_INIT_FAILED);
+            cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+            return;
+        }
 
         Fight fight = new Fight(UUID.randomUUID().toString(), initiator, target);
         WORLD.getFights().put(fight.getFightId(), fight);
@@ -115,6 +119,8 @@ public class FightHandler {
         if (fight == null) {
             return;
         }
+
+        System.out.println(fight.getFightId());
     }
 
 }
