@@ -20,4 +20,10 @@ public class ShieldBuff extends Buff {
             return Math.max(damage - buffValue,0);
         }
     }
+
+    public Buff clone(){
+
+        ShieldBuff shieldBuff = new ShieldBuff(this.buffValue / 2);
+        return shieldBuff;
+    }
 }

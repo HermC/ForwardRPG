@@ -3,6 +3,7 @@ package edu.nju.hermc.forward.game.fight;
 import edu.nju.hermc.forward.game.creature.Creature;
 import edu.nju.hermc.forward.game.creature.Enemy;
 import edu.nju.hermc.forward.game.creature.Player;
+import edu.nju.hermc.forward.game.skill.Buff;
 import edu.nju.hermc.forward.game.skill.Skill;
 
 public class Fight {
@@ -32,14 +33,18 @@ public class Fight {
             if(hasConsume) {
                 if (skill.getType()) {
                     String result_string = "";
+                    Buff buff = skill.getSkillBuff().clone();
+
                     if (skill.getSkillValue() > 0) {
-                        creature[turnID].addBuff(skill.getSkillBuff());
-                        result_string += creature[turnID].getObjectId() + "对自己施加了" + skill.getDecription();
+
+                        creature[turnID].addBuff(buff);
+                        result_string += creature[turnID].getObjectId() + "对自己施加了" + buff.getName();
                     } else {
                         int next_id = (turnID + 1) % 2;
-                        creature[next_id].addBuff(skill.getSkillBuff());
+
+                        creature[next_id].addBuff(buff);
                         result_string += creature[turnID].getObjectId() + "对" + creature[next_id].getObjectId()
-                                + "施加了" + skill.getName();
+                                + "施加了" + buff.getName();
                     }
                     turnID = (turnID + 1) % 2;
                     return result_string;

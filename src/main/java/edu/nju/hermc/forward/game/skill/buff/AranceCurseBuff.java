@@ -21,4 +21,10 @@ public class AranceCurseBuff extends Buff {
             return damage + buffValue;
         }
     }
+
+    public Buff clone(){
+
+        AranceCurseBuff aranceCurseBuff = new AranceCurseBuff(this.buffValue / 2);
+        return aranceCurseBuff;
+    }
 }
