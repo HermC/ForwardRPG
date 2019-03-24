@@ -12,7 +12,7 @@ public class Enemy extends Creature {
 
     public Enemy(String objectId, int hp, int mp, int ap, int level, Bag bag) {
         super(objectId, hp, mp, ap, level, bag);
-        int skilllevel  = level / 10;
+        int skilllevel  = level / 10 + 1;
         ArrayList<Skill> skillList = new ArrayList<>();
         Attack attack0 = new Attack(skilllevel);
         skillList.add(attack0);
