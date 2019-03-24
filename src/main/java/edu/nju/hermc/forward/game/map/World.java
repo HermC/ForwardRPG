@@ -39,13 +39,13 @@ public class World {
     }
 
     private void initCreatures() {
-        Enemy enemy1 = new Enemy("Enemy1", 20, 20, 20, 1, new Bag(0, null), new ArrayList<>());
+        Enemy enemy1 = new Enemy("Enemy1", 20, 20, 20, 1, new Bag(0, null));
         enemy1.setX(80);
         enemy1.setY(100);
-        Enemy enemy2 = new Enemy("Enemy2", 30, 30, 20, 2, new Bag(0, null), new ArrayList<>());
+        Enemy enemy2 = new Enemy("Enemy2", 30, 30, 20, 2, new Bag(0, null));
         enemy2.setX(100);
         enemy2.setY(140);
-        Enemy enemy3 = new Enemy("Enemy3", 40, 40, 20, 3, new Bag(0, null), new ArrayList<>());
+        Enemy enemy3 = new Enemy("Enemy3", 40, 40, 20, 3, new Bag(0, null));
         enemy3.setX(100);
         enemy3.setY(180);
         enemies.addAll(Arrays.asList(enemy1, enemy2, enemy3));

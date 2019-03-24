@@ -101,7 +101,7 @@ public class AuthHandler {
         playerMapper.insert(info);
         bagMapper.insert(bagInfo);
 
-        Player player = PlayerFactory.getPlayer(info);
+        Player player = PlayerFactory.getPlayer(info, bagInfo);
 
         WORLD.getCreatures().remove(username);
         WORLD.getCreatures().put(username, player);
