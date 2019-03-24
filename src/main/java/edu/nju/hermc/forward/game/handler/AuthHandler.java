@@ -1,9 +1,12 @@
 package edu.nju.hermc.forward.game.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.nju.hermc.forward.game.command.Command;
 import edu.nju.hermc.forward.game.creature.Creature;
+import edu.nju.hermc.forward.game.creature.Player;
 import edu.nju.hermc.forward.game.creature.PlayerFactory;
+import edu.nju.hermc.forward.game.map.World;
 import edu.nju.hermc.forward.game.utils.Constants;
 import edu.nju.hermc.forward.mapper.PlayerMapper;
 import edu.nju.hermc.forward.model.PlayerInfo;
@@ -16,6 +19,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 @Sharable
 public class AuthHandler {
@@ -24,8 +30,6 @@ public class AuthHandler {
 
     private static final ObjectMapper parser = new ObjectMapper();
 
-    @Autowired
-    private RedisUtils redisUtils;
     @Autowired
     private PlayerMapper playerMapper;
 
@@ -43,8 +47,10 @@ public class AuthHandler {
     }
 
     public void login(Channel cl, Command wrapper) throws Exception {
+        World WORLD = World.getInstance();
+
         PlayerInfo user = parser.readValue(parser.writeValueAsString(wrapper.getData()), PlayerInfo.class);
-        if (redisUtils.hasKey(user.getUsername())) {
+        if (WORLD.getCreatures().containsKey(user.getUsername())) {
             wrapper.setCode(Constants.AUTHORIZATION_ACTIVE);
             cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
             return;
@@ -52,22 +58,25 @@ public class AuthHandler {
         PlayerInfo realUser = playerMapper.find(user.getUsername());
         if (realUser == null) {
             wrapper.setCode(Constants.AUTHORIZATION_CHOOSE_CAREER);
-            redisUtils.set(cl.id().asLongText(), user.getUsername());
+            WORLD.getPlayers().put(cl.id().asLongText(), user.getUsername());
             cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
             return;
         }
 
-        redisUtils.hset(user.getUsername(), Creature.class.getName(), PlayerFactory.getPlayer(realUser));
-        redisUtils.set(cl.id().asLongText(), user.getUsername());
+        Player player = PlayerFactory.getPlayer(realUser);
+        WORLD.getCreatures().put(user.getUsername(), player);
+        WORLD.getClients().put(user.getUsername(), cl.id().asLongText());
 
-        wrapper.setCode(Constants.AUTHORIZATION_SUCCESS);
-        wrapper.setData(realUser);
-        cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+        WORLD.getPlayers().put(cl.id().asLongText(), user.getUsername());
+
+        authSuccess(cl, wrapper, player);
     }
 
     public void chooseCareer(Channel cl, Command wrapper) throws Exception {
+        World WORLD = World.getInstance();
+
         String career = (String) wrapper.getData();
-        Object userData = redisUtils.get(cl.id().asLongText());
+        Object userData = WORLD.getCreatures().get(cl.id().asLongText());
         if (userData == null) {
             wrapper.setCode(Constants.AUTHORIZATION_FAIL);
             cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
@@ -83,21 +92,31 @@ public class AuthHandler {
         PlayerInfo info = PlayerFactory.getPlayerInfo(username, career);
         playerMapper.insert(info);
 
-        redisUtils.del(username);
-        redisUtils.hset(username, Creature.class.getName(), PlayerFactory.getPlayer(info));
+        Player player = PlayerFactory.getPlayer(info);
 
+        WORLD.getCreatures().remove(username);
+        WORLD.getCreatures().put(username, player);
+        WORLD.getClients().put(username, cl.id().asLongText());
+
+        authSuccess(cl, wrapper, player);
+    }
+
+    private void authSuccess(Channel cl, Command wrapper, Player player) throws JsonProcessingException {
         wrapper.setCode(Constants.AUTHORIZATION_SUCCESS);
-        wrapper.setData(PlayerFactory.getPlayer(info));
+        Map<String, Object> rs = new HashMap<>();
+        rs.put("player", player);
+        rs.put("map", World.getInstance().getEnemies());
+        wrapper.setData(rs);
         cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
-        return;
     }
 
     public void loseAuth(Channel cl) throws Exception {
-        String username = (String) redisUtils.get(cl.id().asLongText());
+        World WORLD = World.getInstance();
+        String username = WORLD.getPlayers().get(cl.id().asLongText());
         if (username == null) {
             return;
         }
-        Creature player = (Creature) redisUtils.hget(username, Creature.class.getName());
+        Player player = (Player) WORLD.getCreatures().get(username);
         PlayerInfo info = playerMapper.find(username);
         info.setX(player.getX());
         info.setY(player.getY());
@@ -107,8 +126,9 @@ public class AuthHandler {
         info.setAp(player.getAp());
         playerMapper.update(info);
 
-        redisUtils.del(username);
-        redisUtils.del(cl.id().asLongText());
+        WORLD.getCreatures().remove(username);
+        WORLD.getPlayers().remove(cl.id().asLongText());
+        WORLD.getClients().remove(username);
     }
 
 }

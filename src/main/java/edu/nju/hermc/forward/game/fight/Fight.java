@@ -5,11 +5,15 @@ import edu.nju.hermc.forward.game.skill.Skill;
 
 public class Fight {
 
+    private String fightId;
+
     private Creature[] creature = new Creature[2];
 
     private int turnID;
 
-    public Fight(Creature creatureA , Creature creatureB){
+    public Fight(String fightId, Creature creatureA , Creature creatureB){
+        this.fightId = fightId;
+
         this.turnID = 0;
         this.creature[0] = creatureA;
         this.creature[1] = creatureB;
@@ -52,6 +56,14 @@ public class Fight {
         }
 
 
+    }
+
+    public String getFightId() {
+        return fightId;
+    }
+
+    public void setFightId(String fightId) {
+        this.fightId = fightId;
     }
 
     public int autoFight(){

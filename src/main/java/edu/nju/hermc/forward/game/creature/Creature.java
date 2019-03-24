@@ -1,5 +1,8 @@
 package edu.nju.hermc.forward.game.creature;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.nju.hermc.forward.game.creature.state.MoveState;
+import edu.nju.hermc.forward.game.creature.state.State;
 import edu.nju.hermc.forward.game.skill.Buff;
 import edu.nju.hermc.forward.game.skill.Skill;
 import edu.nju.hermc.forward.game.skill.bag.Bag;
@@ -10,6 +13,8 @@ import java.util.List;
 
 
 public abstract class Creature implements Serializable {
+
+    protected String objectId;
 
     protected double x;
     protected double y;
@@ -27,17 +32,18 @@ public abstract class Creature implements Serializable {
     protected Buff buff = null;
 
     protected List<Skill> skillList;
-//    public Creature(int hp,int mp,int ap){
-//        this.hp = hp;
-//        this.mp = mp;
-//        this.ap = ap;
-//    }
+
+    @JsonIgnore
+    protected State state;
 
     public Creature() {
+        this.state = new MoveState();
     }
 
 
-    public Creature(int hp, int mp, int ap, int level, Bag bag, List<Skill> skillList) {
+    public Creature(String objectId, int hp, int mp, int ap, int level, Bag bag, List<Skill> skillList) {
+        this.objectId = objectId;
+
         this.hp = hp;
         this.mp = mp;
         this.ap = ap;
@@ -48,6 +54,16 @@ public abstract class Creature implements Serializable {
         this.level = level;
         this.bag = bag;
         this.skillList = skillList;
+
+        this.state = new MoveState();
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     public double getX() {
@@ -152,5 +168,11 @@ public abstract class Creature implements Serializable {
         return true;
     }
 
+    public State getState() {
+        return state;
+    }
 
+    public void setState(State state) {
+        this.state = state;
+    }
 }

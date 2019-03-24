@@ -7,20 +7,20 @@ import java.util.ArrayList;
 
 public class PlayerFactory {
 
-    public static Creature getPlayer(PlayerInfo info) {
+    public static Player getPlayer(PlayerInfo info) {
         switch (info.getCareer()) {
             case "assassin":
-                Creature assassin =  new Assassin(info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
+                Player assassin =  new Assassin(info.getUsername(), info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
                 assassin.setX(info.getX());
                 assassin.setY(info.getY());
                 return assassin;
             case "mage":
-                Creature mage = new Mage(info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
+                Player mage = new Mage(info.getUsername(), info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
                 mage.setX(info.getX());
                 mage.setY(info.getY());
                 return mage;
             case "warrior":
-                Creature warrior =  new Warrior(info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
+                Player warrior =  new Warrior(info.getUsername(), info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
                 warrior.setX(info.getX());
                 warrior.setY(info.getY());
                 return warrior;

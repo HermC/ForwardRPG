@@ -3,16 +3,24 @@ package edu.nju.hermc.forward.game.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.nju.hermc.forward.game.command.Command;
 import edu.nju.hermc.forward.game.command.FightCommand;
+import edu.nju.hermc.forward.game.command.FightInfoCommand;
 import edu.nju.hermc.forward.game.command.FightInitCommand;
+import edu.nju.hermc.forward.game.creature.Creature;
+import edu.nju.hermc.forward.game.creature.Player;
+import edu.nju.hermc.forward.game.fight.Fight;
+import edu.nju.hermc.forward.game.map.World;
 import edu.nju.hermc.forward.game.utils.Constants;
 import edu.nju.hermc.forward.model.User;
 import edu.nju.hermc.forward.utils.RedisUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 @Sharable
@@ -22,8 +30,6 @@ public class FightHandler {
 
     private static final ObjectMapper parser = new ObjectMapper();
 
-    @Autowired
-    private RedisUtils redisUtils;
 
     public void fight(Channel cl, Command command) throws Exception {
         switch (command.getCode()) {
@@ -38,26 +44,77 @@ public class FightHandler {
         }
     }
 
-    public void fightInit(Channel cl, Command wrapper) throws Exception {
-        FightInitCommand command = parser.readValue(parser.writeValueAsString(wrapper.getData()), FightInitCommand.class);
-        User initiator = parser.readValue((String) redisUtils.get(command.getInitiator()), User.class);
-        User targertor = parser.readValue((String) redisUtils.get(command.getInitiator()), User.class);
+    public synchronized void fightInit(Channel cl, Command wrapper) throws Exception {
+        World WORLD = World.getInstance();
 
-        if (initiator == null || targertor == null) {
+        FightInitCommand command = parser.readValue(parser.writeValueAsString(wrapper.getData()), FightInitCommand.class);
+
+        Creature initiator = WORLD.getCreatures().get(command.getInitiator());
+        Creature target = WORLD.getCreatures().get(command.getTarget());
+
+        System.out.println(initiator.getState());
+        System.out.println(target.getState());
+
+        if (initiator == null || target == null) {
+            wrapper.setCode(Constants.FIGHT_INIT_FAILED);
+            cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
             return;
         }
+
+        if (!target.getState().doCollide(target)) {
+            wrapper.setCode(Constants.FIGHT_INIT_FAILED);
+            cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+            return;
+        }
+
+        initiator.getState().doCollide(initiator);
+
+
+        Fight fight = new Fight(UUID.randomUUID().toString(), initiator, target);
+        WORLD.getFights().put(fight.getFightId(), fight);
+
+        FightInfoCommand fi1 = new FightInfoCommand();
+        fi1.setFightId(fight.getFightId());
+        fi1.setOurSide(initiator);
+        fi1.setOtherSide(target);
+
+        wrapper.setCode(Constants.FIGHT_INIT);
+        wrapper.setData(fi1);
+        cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+
+
+        if (target instanceof Player) {
+            System.out.println(((Player) target).getCareer());
+            FightInfoCommand fi2 = new FightInfoCommand();
+            fi2.setFightId(fight.getFightId());
+            fi2.setOurSide(target);
+            fi2.setOtherSide(initiator);
+
+            String cl2 = WORLD.getClients().get(target.getObjectId());
+            for (Channel c: WorldHandler.clients) {
+                if (c.id().asLongText().equals(cl2)) {
+                    c.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(fi2)));
+                    break;
+                }
+            }
+
+        }
+
+        WORLD.getCreatures().put(initiator.getObjectId(), initiator);
+        WORLD.getCreatures().put(target.getObjectId(), target);
     }
 
     public void fighting(Channel cl, Command wrapper) throws Exception {
+        World WORLD = World.getInstance();
+
         FightCommand command = parser.readValue(parser.writeValueAsString(wrapper.getData()), FightCommand.class);
-        if (!redisUtils.hasKey(command.getFightId())) {
+        if (!WORLD.getFights().containsKey(command.getFightId())) {
             return;
         }
-        Object fight = redisUtils.get(command.getFightId());
+        Fight fight = WORLD.getFights().get(command.getFightId());
         if (fight == null) {
             return;
         }
-
     }
 
 }

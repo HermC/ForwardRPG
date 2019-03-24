@@ -32,12 +32,17 @@
     var player;
     var otherPlayers = [];
 
+    var monsters = [];
+
     var cursors;
 
     var game;
     var socket;
 
-    function initGame() {
+    var isFighting = false;
+    var fightId = null;
+
+    function initGame(msg) {
         game = new Phaser.Game(viewWidth, viewHeight, Phaser.CANVAS, view);
 
         game.states = {};
@@ -90,24 +95,47 @@
 
                 game.physics.startSystem(Phaser.Physics.ARCADE);
 
-                player = game.add.sprite(40 * scale, 8 * scale, playerTexture);
+                if (msg) {
+                    player = game.add.sprite(msg['data']['player']['x'], msg['data']['player']['y'], playerTexture);
+                    player['objectId'] = msg['data']['player']['objectId'];
+                } else {
+                    player = game.add.sprite(40 * scale, 8 * scale, playerTexture);
+                    player['objectId'] = 'player';
+                }
                 player.anchor.set(0.5);
                 game.physics.arcade.enable(player);
                 player.body.collideWorldBounds = true;
                 game.camera.follow(player);
                 cursors = game.input.keyboard.createCursorKeys();
 
-                this.monster = game.add.sprite(40 * scale, 100 * scale, monsterTexture);
-                this.monster.anchor.set(0.5);
-                game.physics.arcade.enable(this.monster);
-                this.monster.body.immovable = true;
+                var monstersInfo = msg['data']['map'];
+                for (var i = 0; i < monstersInfo.length; i++) {
+                    var monster = game.add.sprite(monstersInfo[i]['x'], monstersInfo[i]['y'], monsterTexture);
+                    monster['objectId'] = monstersInfo[i]['objectId'];
+                    monster.anchor.set(0.5);
+                    game.physics.arcade.enable(monster);
+                    monster.body.immovable = true;
+                    monsters.push(monster);
+                }
             };
 
             this.update = function() {
+
+                if (isFighting) return;
+
                 game.physics.arcade.collide(player, this.layer);
-                game.physics.arcade.collide(player, this.monster, function(player, monster) {
-                    console.log('collide!');
-                }, null, this);
+                for(var i = 0; i < monsters.length; i++) {
+                    game.physics.arcade.collide(player, monsters[i], function(player, monster) {
+                        // console.log('collide', player['objectId'], monster['objectId']);
+                        socket.send(JSON.stringify({
+                            code: 2001,
+                            data: {
+                                initiator: player['objectId'],
+                                target: monster['objectId']
+                            }
+                        }));
+                    });
+                }
 
                 for(var i = 0; i < otherPlayers.length; i++) {
                     game.physics.arcade.collide(player, otherPlayers[i]);
@@ -188,7 +216,7 @@
             console.log('建立连接!');
         };
         socket.onmessage = function(ev) {
-            console.log(ev.data);
+            console.log(JSON.parse(ev.data));
             var msg = JSON.parse(ev.data);
 
             switch (msg['code'] - msg['code'] % 1000) {
@@ -198,8 +226,11 @@
                 case 1000:
                     refreshPosition(msg['data']);
                     break;
+                case 2000:
+                    handlerFight(msg);
+                    break;
                 case 3000:
-                    initPlayerState();
+                    // initPlayerState();
                     break;
                 case 4000:
 
@@ -237,20 +268,40 @@
         });
     }
 
-    function initPlayer(msg) {
+    function setPlayerGameState(state) {
+        $('#player-game-state-name').html(state['objectId']);
+        $('#player-game-state-career').html(state['career']);
+        $('#player-game-state-level').html(state['level']);
+        $('#player-game-state-hp').html(state['current_hp'] + '/' + state['hp']);
+        $('#player-game-state-mp').html(state['current_mp'] + '/' + state['mp']);
+        $('#player-game-state-ap').html(state['current_ap'] + '/' + state['ap']);
+    }
+
+    function handlerFight(msg) {
+        switch (msg['code']) {
+            case 2003:
+                break;
+            case 2002:
+                break;
+            case 2001:
+                initFight(msg);
+                break;
+        }
+    }
+
+    function initFight(msg) {
         var data = msg['data'];
-        player.reset(data['x'], data['y']);
-    }
-
-    function initPlayerState() {
-
-    }
-
-    function initFight() {
+        isFighting = true;
+        fightId = msg['data']['fightId'];
         $('#fight-wrapper').show();
+        $('#fight-wrapper').focus();
         setSkills();
-        setEnemyState();
-        setPlayerState();
+        setEnemyState(data['otherSide']);
+        setPlayerState(data['ourSide']);
+        // cursors = null;
+
+        $('#history').html('');
+        setHistory('与[' + data['otherSide']['objectId'] + ']的战斗开始了!');
     }
 
     function setHistory(text) {
@@ -262,22 +313,62 @@
         $('#skill1').html();
         $('#skill2').html();
         $('#skill3').html();
+
+        $('#skill1').unbind();
+        $('#skill2').unbind();
+        $('#skill3').unbind();
+
+        $('#skill1').on('click', function() {
+            if (!fightId) return;
+            socket.send({
+                code: 2000,
+                data: {
+                    fightId: fightId,
+                    username: player['objectId'],
+                    skillId: $(this).find('input').val()
+                }
+            });
+        });
+        $('#skill2').on('click', function() {
+            if (!fightId) return;
+            socket.send({
+                code: 2000,
+                data: {
+                    fightId: fightId,
+                    username: player['objectId'],
+                    skillId: $(this).find('input').val()
+                }
+            });
+        });
+        $('#skill3').on('click', function() {
+            if (!fightId) return;
+            socket.send({
+                code: 2000,
+                data: {
+                    fightId: fightId,
+                    username: player['objectId'],
+                    skillId: $(this).find('input').val()
+                }
+            });
+        });
     }
 
     function setEnemyState(state) {
-        $('#enemy-name').html();
-        $('#enemy-hp').html();
-        $('#enemy-mp').html();
-        $('#enemy-ap').html();
-        $('#enemy-buff').html();
+        $('#enemy-name').html(state['objectId']);
+        $('#enemy-career').html(state['career']);
+        $('#enemy-hp').html(state['current_hp'] + '/' + state['hp']);
+        $('#enemy-mp').html(state['current_mp'] + '/' + state['mp']);
+        $('#enemy-ap').html(state['current_ap'] + '/' + state['ap']);
+        $('#enemy-buff').html(state['buff']);
     }
 
     function setPlayerState(state) {
-        $('#player-name').html();
-        $('#player-hp').html();
-        $('#player-mp').html();
-        $('#player-ap').html();
-        $('#player-buff').html();
+        $('#player-name').html(state['objectId']);
+        $('#player-career').html(state['career']);
+        $('#player-hp').html(state['current_hp'] + '/' + state['hp']);
+        $('#player-mp').html(state['current_mp'] + '/' + state['mp']);
+        $('#player-ap').html(state['current_ap'] + '/' + state['ap']);
+        $('#player-buff').html(state['buff']);
     }
 
     function chooseCareer(msg) {
@@ -287,15 +378,14 @@
     }
 
     function handlerAuthorization(msg) {
-        console.log(msg);
         switch (msg['code']) {
             case 4:
                 chooseCareer(msg);
                 break;
             case 1:
-                initGame();
+                initGame(msg);
                 $('#login').hide();
-                initPlayer(msg);
+                setPlayerGameState(msg['data']['player']);
                 break;
             default:
                 break;

@@ -7,6 +7,6 @@ public class FightInitCommand {
 
     private String initiator;
 
-    private String targeter;
+    private String target;
 
 }

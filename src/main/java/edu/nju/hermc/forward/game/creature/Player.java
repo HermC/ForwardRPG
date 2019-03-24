@@ -5,20 +5,23 @@ import edu.nju.hermc.forward.game.skill.bag.Bag;
 
 import java.util.List;
 
-public class Player extends Creature{
+public class Player extends Creature {
 
+    protected String career;
 
-    protected String playerID;
-
-    public Player() {}
-
-    public Player(int hp, int mp, int ap, int level, Bag bag, String playerID, List<Skill> skillList) {
-        super(hp, mp, ap, level, bag,skillList);
-        this.playerID = playerID;
+    public Player() {
     }
 
-
-    public Player(int hp, int mp, int ap, int level, Bag bag,List<Skill> skillList) {
-        super(hp, mp, ap, level, bag, skillList);
+    public Player(String objectId, int hp, int mp, int ap, int level, Bag bag, List<Skill> skillList) {
+        super(objectId, hp, mp, ap, level, bag, skillList);
     }
+
+    public String getCareer() {
+        return career;
+    }
+
+    public void setCareer(String career) {
+        this.career = career;
+    }
+
 }

@@ -33,7 +33,7 @@ body {
     left: 800px;
     background-color: white;
     padding: 14px 20px;
-    display: flex;
+    /*display: flex;*/
 
     border: 1px solid black;
     border-left: 0;
@@ -41,14 +41,34 @@ body {
 #player-game-state {
     width: 100%;
     height: 270px;
-    background-color: lightgrey;
+    padding: 5px 10px;
 
+    background-color: lightgrey;
+}
+#player-game-state .state {
+    padding: 10px 20px;
     display: flex;
 }
 #player-game-state .state span:first-child {
     flex: 1;
 }
 #player-game-state .state span {
+    flex: 3;
+}
+#bag-wrapper {
+    width: 100%;
+    height: 270px;
+    background-color: lightgrey;
+    padding: 5px 10px;
+}
+.bag-item {
+    padding: 10px 20px;
+    display: flex;
+}
+.bag-item span:first-child {
+    flex: 1;
+}
+.bag-item span {
     flex: 3;
 }
 #fight {
@@ -60,6 +80,7 @@ body {
     border: 1px solid black;
 
     padding: 20px 20px;
+    background-color: white;
 }
 #fight-state {
     width: 300px;
@@ -124,10 +145,10 @@ body {
     background-color: lightgrey;
 }
 #enemy-state, #player-state {
-    padding: 10px;
+    padding: 5px 10px;
 }
 #enemy-state .state, #player-state .state {
-    padding: 14px 20px;
+    padding: 10px 20px;
     display: flex;
 }
 #enemy-state .state span:first-child, #player-state .state span:first-child {

@@ -7,13 +7,13 @@ import java.util.List;
 
 public class Assassin extends Player {
 
-    public Assassin() { }
-
-    public Assassin(int hp, int mp, int ap, int level, Bag bag, String playerID,List<Skill> skillList) {
-        super(hp, mp, ap, level, bag, playerID,skillList);
+    public Assassin() {
+        this.career = "刺客";
     }
 
-    public Assassin(int hp, int mp, int ap, int level, Bag bag,List<Skill> skillList) {
-        super(hp, mp, ap, level, bag,skillList);
+    public Assassin(String objectId, int hp, int mp, int ap, int level, Bag bag,List<Skill> skillList) {
+        super(objectId, hp, mp, ap, level, bag,skillList);
+        this.career = "刺客";
     }
+
 }

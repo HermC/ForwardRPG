@@ -16,10 +16,35 @@
         <div class="game" id="game"></div>
         <div id="game-state">
             <div id="player-game-state">
-
+                <div class="state">
+                    <span>名称:</span><span id="player-game-state-name"></span>
+                </div>
+                <div class="state">
+                    <span>职业:</span><span id="player-game-state-career"></span>
+                </div>
+                <div class="state">
+                    <span>Level:</span><span id="player-game-state-level"></span>
+                </div>
+                <div class="state">
+                    <span>HP:</span><span id="player-game-state-hp"></span>
+                </div>
+                <div class="state">
+                    <span>MP:</span><span id="player-game-state-mp"></span>
+                </div>
+                <div class="state">
+                    <span>AP:</span><span id="player-game-state-ap"></span>
+                </div>
             </div>
-            <div id="bag">
-
+            <div id="bag-wrapper">
+                <div class="bag-item">
+                    <strong>背包:</strong>
+                </div>
+                <div class="bag-item">
+                    <span>金币:</span><span id="coin">100</span>
+                </div>
+                <div class="bag-item">
+                    <span>物品:</span><span></span>
+                </div>
             </div>
         </div>
     </div>
@@ -61,64 +86,70 @@
             </div>
         </div>
     </div>
-    <!--<div class="game-state" id="fight-wrapper">-->
-        <!--<div class="fight" id="fight">-->
-            <!--&lt;!&ndash;<button type="button" id="fight-close">close</button>&ndash;&gt;-->
-            <!--<div id="history-wrapper">-->
-                <!--<h4 class="badge badge-secondary">战斗历史: </h4>-->
-                <!--<div id="history">-->
-                    <!--helsjfoaisf-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div id="skills-wrapper">-->
-                <!--<div class="skill" id="skill1">-->
-                    <!--技能1-->
-                <!--</div>-->
-                <!--<div class="skill" id="skill2">-->
-                    <!--技能2-->
-                <!--</div>-->
-                <!--<div class="skill" id="skill3">-->
-                    <!--技能3-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div id="fight-state">-->
-            <!--<div id="enemy-state">-->
-                <!--<div class="state">-->
-                    <!--<span>名称:</span><span id="enemy-name"></span>-->
-                <!--</div>-->
-                <!--<div class="state">-->
-                    <!--<span>HP:</span><span id="enemy-hp"></span>-->
-                <!--</div>-->
-                <!--<div class="state">-->
-                    <!--<span>MP:</span><span id="enemy-mp"></span>-->
-                <!--</div>-->
-                <!--<div class="state">-->
-                    <!--<span>AP:</span><span id="enemy-ap"></span>-->
-                <!--</div>-->
-                <!--<div class="state">-->
-                    <!--<span>Buff:</span><span id="enemy-buff"></span>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div id="player-state">-->
-                <!--<div class="state">-->
-                    <!--<span>名称:</span><span id="player-name"></span>-->
-                <!--</div>-->
-                <!--<div class="state">-->
-                    <!--<span>HP:</span><span id="player-hp"></span>-->
-                <!--</div>-->
-                <!--<div class="state">-->
-                    <!--<span>MP:</span><span id="player-mp"></span>-->
-                <!--</div>-->
-                <!--<div class="state">-->
-                    <!--<span>AP:</span><span id="player-ap"></span>-->
-                <!--</div>-->
-                <!--<div class="state">-->
-                    <!--<span>Buff:</span><span id="player-buff"></span>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div class="game-state" id="fight-wrapper" style="display: none">
+        <div class="fight" id="fight">
+            <!--<button type="button" id="fight-close">close</button>-->
+            <div id="history-wrapper">
+                <h4 class="badge badge-secondary">战斗历史: </h4>
+                <div id="history">
+
+                </div>
+            </div>
+            <div id="skills-wrapper">
+                <div class="skill" id="skill1">
+                    技能1
+                </div>
+                <div class="skill" id="skill2">
+                    技能2
+                </div>
+                <div class="skill" id="skill3">
+                    技能3
+                </div>
+            </div>
+        </div>
+        <div id="fight-state">
+            <div id="enemy-state">
+                <div class="state">
+                    <span>名称:</span><span id="enemy-name"></span>
+                </div>
+                <div class="state">
+                    <span>职业:</span><span id="enemy-career"></span>
+                </div>
+                <div class="state">
+                    <span>HP:</span><span id="enemy-hp"></span>
+                </div>
+                <div class="state">
+                    <span>MP:</span><span id="enemy-mp"></span>
+                </div>
+                <div class="state">
+                    <span>AP:</span><span id="enemy-ap"></span>
+                </div>
+                <div class="state">
+                    <span>Buff:</span><span id="enemy-buff"></span>
+                </div>
+            </div>
+            <div id="player-state">
+                <div class="state">
+                    <span>名称:</span><span id="player-name"></span>
+                </div>
+                <div class="state">
+                    <span>职业:</span><span id="player-career"></span>
+                </div>
+                <div class="state">
+                    <span>HP:</span><span id="player-hp"></span>
+                </div>
+                <div class="state">
+                    <span>MP:</span><span id="player-mp"></span>
+                </div>
+                <div class="state">
+                    <span>AP:</span><span id="player-ap"></span>
+                </div>
+                <div class="state">
+                    <span>Buff:</span><span id="player-buff"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="application/javascript" src="js/jquery/dist/jquery.min.js"></script>
 <script type="application/javascript" src="js/bootstrap/dist/js/bootstrap.min.js"></script>

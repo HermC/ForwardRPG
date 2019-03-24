@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class FightCommand {
 
-    private String clientId;
+    private String username;
 
     private String fightId;
 

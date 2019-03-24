@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.nju.hermc.forward.game.command.Command;
 import edu.nju.hermc.forward.game.command.MoveCommand;
 import edu.nju.hermc.forward.game.creature.Creature;
+import edu.nju.hermc.forward.game.creature.Player;
+import edu.nju.hermc.forward.game.map.World;
 import edu.nju.hermc.forward.mapper.PlayerMapper;
 import edu.nju.hermc.forward.utils.RedisUtils;
 import edu.nju.hermc.forward.utils.SerializeUtil;
@@ -21,22 +23,19 @@ public class MoveHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(MoveHandler.class);
 
-    @Autowired
-    private RedisUtils redisUtils;
-//    @Autowired
-//    private PlayerMapper
-
     private ObjectMapper parser = new ObjectMapper();
 
     public void move(Channel cl, Command wrapper) throws Exception {
+        World WORLD = World.getInstance();
+
         MoveCommand command = parser.readValue(parser.writeValueAsString(wrapper.getData()), MoveCommand.class);
         command.setClientId(cl.id().asLongText());
-        if (redisUtils.hasKey(cl.id().asLongText())) {
-            String username = (String) redisUtils.get(cl.id().asLongText());
-            Creature player = (Creature) redisUtils.hget(username, Creature.class.getName());
+        if (WORLD.getPlayers().containsKey(cl.id().asLongText())) {
+            String username = WORLD.getPlayers().get(cl.id().asLongText());
+            Player player = (Player) WORLD.getCreatures().get(username);
             player.setX(command.getX());
             player.setY(command.getY());
-            redisUtils.hset(username, Creature.class.getName(), player);
+            WORLD.getCreatures().put(username, player);
         } else {
 
         }
