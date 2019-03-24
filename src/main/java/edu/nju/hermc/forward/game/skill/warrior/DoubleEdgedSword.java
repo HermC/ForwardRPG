@@ -9,10 +9,20 @@ public class DoubleEdgedSword extends Skill{
         super(skillName, skillDecription, damageValue, buff, skillBuff, level, hp, mp, sp);
     }
 
-
+    public DoubleEdgedSword(int level){
+        this.name = "双刃剑";
+        this.decription = "";
+        this.skillValue = 4;
+        this.isBuff = false;
+        this.skillBuff = null;
+        this.level = level;
+        this.mp = 0;
+        this.ap = 0;
+        this.hp = 2 * level;
+    }
 
     @Override
     public int caculateDamage(int damage) {
-        return 0;
+        return damage + skillValue * level;
     }
 }

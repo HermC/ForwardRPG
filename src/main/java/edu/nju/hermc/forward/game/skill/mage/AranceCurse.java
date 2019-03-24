@@ -19,7 +19,7 @@ public class AranceCurse extends Skill{
         this.skillBuff = new AranceCurseBuff(level);
         this.level = level;
         this.mp = 4;
-        this.sp = 0;
+        this.ap = 0;
         this.hp = 0;
 
     }

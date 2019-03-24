@@ -19,7 +19,7 @@ public class AranceBomb extends Skill{
         this.skillBuff = null;
         this.level = level;
         this.mp = 6;
-        this.sp = 0;
+        this.ap = 0;
         this.hp = 0;
 
     }

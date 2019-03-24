@@ -12,14 +12,14 @@ public class Fireball extends Skill{
 
 
     public Fireball(int level){
-        this.name = "奥术诅咒";
+        this.name = "火球术";
         this.decription = "";
         this.skillValue = 1;
         this.isBuff = false;
         this.skillBuff = null;
         this.level = level;
         this.mp = 2;
-        this.sp = 0;
+        this.ap = 0;
         this.hp = 0;
 
     }
