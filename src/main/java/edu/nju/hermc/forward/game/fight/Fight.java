@@ -109,5 +109,11 @@ public class Fight {
         }
     }
 
+    public Creature[] getCreature() {
+        return creature;
+    }
 
+    public void setCreature(Creature[] creature) {
+        this.creature = creature;
+    }
 }

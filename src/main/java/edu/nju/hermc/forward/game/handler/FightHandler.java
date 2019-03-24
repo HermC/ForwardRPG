@@ -1,11 +1,9 @@
 package edu.nju.hermc.forward.game.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.nju.hermc.forward.game.command.Command;
-import edu.nju.hermc.forward.game.command.FightCommand;
-import edu.nju.hermc.forward.game.command.FightInfoCommand;
-import edu.nju.hermc.forward.game.command.FightInitCommand;
+import edu.nju.hermc.forward.game.command.*;
 import edu.nju.hermc.forward.game.creature.Creature;
+import edu.nju.hermc.forward.game.creature.Enemy;
 import edu.nju.hermc.forward.game.creature.Player;
 import edu.nju.hermc.forward.game.creature.state.MoveState;
 import edu.nju.hermc.forward.game.creature.state.State;
@@ -120,7 +118,24 @@ public class FightHandler {
             return;
         }
 
+        String username = WORLD.getPlayers().get(cl.id().asLongText());
+        Creature player = WORLD.getCreatures().get(username);
+        String r = fight.playerFight(player.getObjectId(), player.getSkillList().get(command.getSkillId()));
+        if (r == null) {
+            wrapper.setCode(Constants.FIGHT_NOT_YOUR_TURN);
+            cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+            return;
+        }
 
+        Creature[] creatures = fight.getCreature();
+
+        if (creatures[1] instanceof Enemy) {
+
+        } else {
+            FightResultCommand result = new FightResultCommand();
+            result.setFightId(fight.getFightId());
+            result.setOurSide(creatures[0].getObjectId().equals(username) ? creatures[0] : creatures[1]);
+        }
     }
 
 }

@@ -295,7 +295,7 @@
         fightId = msg['data']['fightId'];
         $('#fight-wrapper').show();
         $('#fight-wrapper').focus();
-        setSkills();
+        setSkills(data['ourSide']['skillList']);
         setEnemyState(data['otherSide']);
         setPlayerState(data['ourSide']);
         // cursors = null;
@@ -310,9 +310,9 @@
     }
 
     function setSkills(skills) {
-        $('#skill1').html(skills[0][]);
-        $('#skill2').html();
-        $('#skill3').html();
+        $('#skill1').html(skills[0]['name']);
+        $('#skill2').html(skills[1]['name']);
+        $('#skill3').html(skills[2]['name']);
 
         $('#skill1').unbind();
         $('#skill2').unbind();
@@ -325,7 +325,7 @@
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
-                    skillId: $(this).find('input').val()
+                    skillId: 1
                 }
             }));
         });
@@ -336,7 +336,7 @@
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
-                    skillId: $(this).find('input').val()
+                    skillId: 2
                 }
             }));
         });
@@ -347,7 +347,7 @@
                 data: {
                     fightId: fightId,
                     username: player['objectId'],
-                    skillId: $(this).find('input').val()
+                    skillId: 3
                 }
             }));
         });
