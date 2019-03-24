@@ -10,7 +10,7 @@ public class Attack extends Skill{
     }
 
     public Attack(int level){
-        this.name = "普通攻击";
+        this.name = "攻击";
         this.decription = "";
         this.skillValue = 1;
         this.isBuff = false;

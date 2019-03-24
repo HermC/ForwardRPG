@@ -15,7 +15,7 @@ public class Shield extends Skill {
     public Shield(int level){
         this.name = "盾牌格挡";
         this.decription = "";
-        this.skillValue = 0;
+        this.skillValue = 2;
         this.isBuff = true;
         this.skillBuff = new ShieldBuff(level);
         this.level = level;
@@ -25,6 +25,6 @@ public class Shield extends Skill {
     }
     @Override
     public int caculateDamage(int damage) {
-        return 0;
+        return damage;
     }
 }
