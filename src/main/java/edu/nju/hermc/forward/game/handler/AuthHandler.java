@@ -66,7 +66,7 @@ public class AuthHandler {
         }
 
         BagInfo bagInfo = bagMapper.find(realUser.getUsername());
-        Player player = PlayerFactory.getPlayer(realUser);
+        Player player = PlayerFactory.getPlayer(realUser, bagInfo);
         WORLD.getCreatures().put(user.getUsername(), player);
         WORLD.getClients().put(user.getUsername(), cl.id().asLongText());
 
@@ -134,6 +134,13 @@ public class AuthHandler {
         info.setMp(player.getMp());
         info.setAp(player.getAp());
         playerMapper.update(info);
+
+        BagInfo bagInfo = new BagInfo();
+        bagInfo.setUsername(player.getObjectId());
+        bagInfo.setCoin(player.getBag().getCoin());
+        bagInfo.setProp(player.getBag().getMyProp().getName());
+        bagInfo.setPropLevel(player.getBag().getMyProp().getLevel());
+        bagMapper.update(bagInfo);
 
         WORLD.getCreatures().remove(username);
         WORLD.getPlayers().remove(cl.id().asLongText());

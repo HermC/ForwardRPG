@@ -309,8 +309,8 @@
         $('#history').html(text + '<br>' + history);
     }
 
-    function setSkills() {
-        $('#skill1').html();
+    function setSkills(skills) {
+        $('#skill1').html(skills[0][]);
         $('#skill2').html();
         $('#skill3').html();
 

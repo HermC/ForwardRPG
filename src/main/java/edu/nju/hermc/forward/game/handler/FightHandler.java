@@ -120,7 +120,7 @@ public class FightHandler {
             return;
         }
 
-        System.out.println(fight.getFightId());
+
     }
 
 }
