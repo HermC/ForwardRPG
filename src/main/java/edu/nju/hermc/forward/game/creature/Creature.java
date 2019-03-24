@@ -41,7 +41,7 @@ public abstract class Creature implements Serializable {
     }
 
 
-    public Creature(String objectId, int hp, int mp, int ap, int level, Bag bag, List<Skill> skillList) {
+    public Creature(String objectId, int hp, int mp, int ap, int level, Bag bag) {
         this.objectId = objectId;
 
         this.hp = hp;
@@ -53,7 +53,7 @@ public abstract class Creature implements Serializable {
 
         this.level = level;
         this.bag = bag;
-        this.skillList = skillList;
+//        this.skillList = skillList;
 
         this.state = new MoveState();
     }

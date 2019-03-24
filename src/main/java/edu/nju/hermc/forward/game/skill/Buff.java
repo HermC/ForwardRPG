@@ -2,20 +2,21 @@ package edu.nju.hermc.forward.game.skill;
 
 public abstract class Buff implements Damage{
 
-    private Buff nextBuff;
+    protected Buff nextBuff;
 
-    private String decription;
+    protected String decription;
 
-    private String name;
+    protected String name;
+
+    protected int buffValue;
 
 
-
-    public Buff(String buffName, String buffDescription ,Buff nextBuff ){
-        this.nextBuff = nextBuff;
-        this.decription = buffDescription;
-        this.name = buffName;
-
-    }
+//    public Buff(String buffName, String buffDescription ,Buff nextBuff ){
+//        this.nextBuff = nextBuff;
+//        this.decription = buffDescription;
+//        this.name = buffName;
+//
+//    }
 
     public Buff getNextBuff() {
         return nextBuff;

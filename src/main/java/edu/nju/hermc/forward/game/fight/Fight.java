@@ -38,12 +38,12 @@ public class Fight {
                         int next_id = (turnID + 1) % 2;
                         creature[next_id].addBuff(skill.getSkillBuff());
                         result_string += creature[turnID].getObjectId() + "对" + creature[next_id].getObjectId()
-                                + "施加了" + skill.getDecription();
+                                + "施加了" + skill.getName();
                     }
                     turnID = (turnID + 1) % 2;
                     return result_string;
                 } else {
-                    int source = skill.getSkillValue();
+                    int source = skill.caculateDamage(0);
                     int damage1 = source;
 
                     if (creature[turnID].getBuff() != null) {
@@ -60,7 +60,7 @@ public class Fight {
                     creature[(turnID + 1) % 2].setCurrent_hp(creature[(turnID + 1) % 2].getCurrent_hp() - damage1);
                     String result_string = "";
                     result_string += creature[turnID].getObjectId() + "对" + creature[(turnID + 1) % 2].getObjectId()
-                            + "施加了" + skill.getDecription() + "，造成了" + String.valueOf(damage1) + "点伤害";
+                            + "施加了" + skill.getName() + "，造成了" + String.valueOf(damage1) + "点伤害";
 
                     return result_string;
                 }

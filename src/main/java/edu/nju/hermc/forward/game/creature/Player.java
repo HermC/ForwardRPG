@@ -12,8 +12,8 @@ public class Player extends Creature {
     public Player() {
     }
 
-    public Player(String objectId, int hp, int mp, int ap, int level, Bag bag, List<Skill> skillList) {
-        super(objectId, hp, mp, ap, level, bag, skillList);
+    public Player(String objectId, int hp, int mp, int ap, int level, Bag bag) {
+        super(objectId, hp, mp, ap, level, bag);
     }
 
     public String getCareer() {

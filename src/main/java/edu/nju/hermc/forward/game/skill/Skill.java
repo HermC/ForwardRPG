@@ -17,7 +17,7 @@ public abstract class Skill implements Damage, Serializable {
 
     protected int hp;
     protected int mp;
-    protected int ap;
+    protected int sp;
 
 
     public String getName() {
@@ -68,15 +68,22 @@ public abstract class Skill implements Damage, Serializable {
         this.level = level;
     }
 
-    public Skill(String skillName, String skillDecription, int damageValue, boolean buff, Buff skillBuff, int level) {
+    public Skill(String skillName, String skillDecription, int damageValue, boolean buff, Buff skillBuff, int level,int hp,int mp,int sp) {
         this.name = skillName;
         this.decription = skillDecription;
         this.skillValue = damageValue;
         this.isBuff = buff;
         this.skillBuff = skillBuff;
         this.level = level;
+        this.mp = mp;
+        this.hp = hp;
+        this.sp = sp;
     }
 
+
+    public Skill(){
+
+    }
 
     public int getHp() {
         return hp;
@@ -94,12 +101,12 @@ public abstract class Skill implements Damage, Serializable {
         this.mp = mp;
     }
 
-    public int getAp() {
-        return ap;
+    public int getSp() {
+        return sp;
     }
 
-    public void setAp(int ap) {
-        this.ap = ap;
+    public void setSp(int sp) {
+        this.sp = sp;
     }
 
     public boolean getType() {
