@@ -13,4 +13,6 @@ public class Enemy extends Creature {
         super(objectId, hp, mp, ap, level, bag, skillList);
     }
 
+
+
 }
