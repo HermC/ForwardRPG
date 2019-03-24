@@ -15,6 +15,11 @@ public abstract class Skill implements Damage, Serializable {
     protected Buff skillBuff;
 
 
+    protected int hp;
+    protected int mp;
+    protected int ap;
+
+
     public String getName() {
         return name;
     }
@@ -72,6 +77,30 @@ public abstract class Skill implements Damage, Serializable {
         this.level = level;
     }
 
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getMp() {
+        return mp;
+    }
+
+    public void setMp(int mp) {
+        this.mp = mp;
+    }
+
+    public int getAp() {
+        return ap;
+    }
+
+    public void setAp(int ap) {
+        this.ap = ap;
+    }
 
     public boolean getType() {
         return this.isBuff;

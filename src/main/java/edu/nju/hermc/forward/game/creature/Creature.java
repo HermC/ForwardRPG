@@ -175,4 +175,19 @@ public abstract class Creature implements Serializable {
     public void setState(State state) {
         this.state = state;
     }
+
+    public void levelup(){
+        this.level = this.level + 1;
+    }
+
+    public boolean consume(Skill skill){
+        if (this.current_ap < skill.getAp() || this.current_mp < skill.getMp() || this.current_hp < skill.getHp()) {
+            return false;
+        }else {
+            this.current_ap = this.current_ap - skill.getAp();
+            this.current_hp = this.current_hp - skill.getHp();
+            this.current_mp = this.current_mp - skill.getMp();
+            return true;
+        }
+    }
 }
