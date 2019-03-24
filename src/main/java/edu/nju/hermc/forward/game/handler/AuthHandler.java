@@ -7,7 +7,9 @@ import edu.nju.hermc.forward.game.creature.Player;
 import edu.nju.hermc.forward.game.creature.PlayerFactory;
 import edu.nju.hermc.forward.game.map.World;
 import edu.nju.hermc.forward.game.utils.Constants;
+import edu.nju.hermc.forward.mapper.BagMapper;
 import edu.nju.hermc.forward.mapper.PlayerMapper;
+import edu.nju.hermc.forward.model.BagInfo;
 import edu.nju.hermc.forward.model.PlayerInfo;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -30,6 +32,8 @@ public class AuthHandler {
 
     @Autowired
     private PlayerMapper playerMapper;
+    @Autowired
+    private BagMapper bagMapper;
 
     public void authorization(Channel cl, Command command) throws Exception {
         switch (command.getCode()) {
@@ -61,6 +65,7 @@ public class AuthHandler {
             return;
         }
 
+        BagInfo bagInfo = bagMapper.find(realUser.getUsername());
         Player player = PlayerFactory.getPlayer(realUser);
         WORLD.getCreatures().put(user.getUsername(), player);
         WORLD.getClients().put(user.getUsername(), cl.id().asLongText());
@@ -88,7 +93,13 @@ public class AuthHandler {
 
         String username = (String) userData;
         PlayerInfo info = PlayerFactory.getPlayerInfo(username, career);
+        BagInfo bagInfo = new BagInfo();
+        bagInfo.setUsername(username);
+        bagInfo.setCoin(100);
+        bagInfo.setProp("weapon");
+        bagInfo.setPropLevel(1);
         playerMapper.insert(info);
+        bagMapper.insert(bagInfo);
 
         Player player = PlayerFactory.getPlayer(info);
 

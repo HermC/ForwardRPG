@@ -1,6 +1,8 @@
 package edu.nju.hermc.forward.game.creature;
 
 import edu.nju.hermc.forward.game.skill.bag.Bag;
+import edu.nju.hermc.forward.game.skill.bag.Weapon;
+import edu.nju.hermc.forward.model.BagInfo;
 import edu.nju.hermc.forward.model.PlayerInfo;
 
 import java.util.ArrayList;
@@ -16,6 +18,29 @@ public class PlayerFactory {
                 return assassin;
             case "mage":
                 Player mage = new Mage(info.getUsername(), info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
+                mage.setX(info.getX());
+                mage.setY(info.getY());
+                return mage;
+            case "warrior":
+                Player warrior =  new Warrior(info.getUsername(), info.getHp(), info.getMp(), info.getAp(), info.getLevel(), new Bag(0), new ArrayList<>());
+                warrior.setX(info.getX());
+                warrior.setY(info.getY());
+                return warrior;
+            default:
+                return null;
+        }
+    }
+
+    public static Player getPlayer(PlayerInfo info, BagInfo bagInfo) {
+        switch (info.getCareer()) {
+            case "assassin":
+                Player assassin =  new Assassin(info.getUsername(), info.getHp(), info.getMp(),
+                        info.getAp(), info.getLevel(), new Bag(bagInfo.getCoin(), new Weapon(bagInfo.getPropLevel(), bagInfo.getProp())), new ArrayList<>());
+                assassin.setX(info.getX());
+                assassin.setY(info.getY());
+                return assassin;
+            case "mage":
+                Player mage = new Mage(info.getUsername(), info.getHp(), info.getMp(), info.getAp(), info.getLevel(),new Bag(bagInfo.getCoin(), new Weapon(bagInfo.getPropLevel(), bagInfo.getProp())), new ArrayList<>());
                 mage.setX(info.getX());
                 mage.setY(info.getY());
                 return mage;
