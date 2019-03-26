@@ -158,11 +158,13 @@ public class FightHandler {
 
             this.refreshCreature(ourSide);
             this.refreshCreature(otherSide);
+            this.refreshFight(fight);
+            WORLD.getFights().remove(fight.getFightId());
             return;
         }
 
         if (creatures[1] instanceof Enemy) {
-            r += "<br>" + fight.autoFight();
+            r = fight.autoFight() + "<br>" + r;
 
             result.setResult(r);
 
@@ -170,6 +172,12 @@ public class FightHandler {
                 wrapper.setCode(Constants.FIGHT_END);
                 wrapper.setData(result);
                 cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+
+                this.refreshCreature(ourSide);
+                this.refreshCreature(otherSide);
+
+                WORLD.getFights().remove(fight.getFightId());
+                return;
             } else {
                 wrapper.setCode(Constants.FIGHT_ACTING);
                 wrapper.setData(result);
@@ -191,8 +199,7 @@ public class FightHandler {
                 }
             }
         }
-        this.refreshCreature(ourSide);
-        this.refreshCreature(otherSide);
+        this.refreshFight(fight);
     }
 
     private void refreshCreature(Creature c) {
@@ -203,6 +210,12 @@ public class FightHandler {
         c.setCurrent_ap(c.getAp());
 
         WORLD.getCreatures().put(c.getObjectId(), c);
+    }
+
+    private void refreshFight(Fight fight) {
+        World WORLD = World.getInstance();
+
+        WORLD.getFights().put(fight.getFightId(), fight);
     }
 
 }

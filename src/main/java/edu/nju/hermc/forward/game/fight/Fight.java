@@ -5,6 +5,9 @@ import edu.nju.hermc.forward.game.creature.Enemy;
 import edu.nju.hermc.forward.game.creature.Player;
 import edu.nju.hermc.forward.game.skill.Skill;
 
+import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class Fight {
 
     private String fightId;
@@ -24,7 +27,7 @@ public class Fight {
 
     public String playerFight(String objid , Skill skill){
         System.out.println(creature[turnID].getObjectId().equals(objid));
-        if ( !creature[turnID].getObjectId().equals(objid) ){
+         if ( !creature[turnID].getObjectId().equals(objid) ){
             return null;
         }else {
             System.out.println("in");
@@ -66,11 +69,10 @@ public class Fight {
                     result_string += creature[turnID].getObjectId() + "对" + creature[(turnID + 1) % 2].getObjectId()
                             + "施加了" + skill.getName() + "，造成了" + String.valueOf(damage1) + "点伤害";
                     turnID = (turnID + 1) % 2;
-
-                    turnID = (turnID + 1) % 2;
                     return result_string;
                 }
             }else {
+                turnID = (turnID + 1) % 2;
                 return "能量不足无法释放";
             }
 
