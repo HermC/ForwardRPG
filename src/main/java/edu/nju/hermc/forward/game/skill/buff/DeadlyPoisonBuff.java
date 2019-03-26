@@ -23,4 +23,11 @@ public class DeadlyPoisonBuff extends Buff{
             return  damage + buffValue;
         }
     }
+
+
+    public Buff clone(){
+
+        DeadlyPoisonBuff deadlyPoisonBuff = new DeadlyPoisonBuff(this.buffValue / 2);
+        return deadlyPoisonBuff;
+    }
 }
