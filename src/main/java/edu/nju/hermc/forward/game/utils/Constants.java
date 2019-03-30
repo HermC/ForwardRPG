@@ -8,6 +8,8 @@ public class Constants {
     public static final int AUTHORIZATION_ACTIVE = 0003;
     public static final int AUTHORIZATION_CHOOSE_CAREER = 0004;
 
+    public static final int LOGOUT = 0005;
+
     public static final int MOVE = 1000;
 
     public static final int FIGHT = 2000;

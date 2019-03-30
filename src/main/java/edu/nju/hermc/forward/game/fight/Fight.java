@@ -109,8 +109,8 @@ public class Fight {
     }
 
     public boolean isEnd(){
-        if (creature[0].getCurrent_hp() == 0 || creature[1].getCurrent_hp() == 0){
-            if (creature[0].getCurrent_hp() == 0){
+        if (creature[0].getCurrent_hp() <= 0 || creature[1].getCurrent_hp() <= 0){
+            if (creature[0].getCurrent_hp() <= 0){
                 if(creature[1] instanceof Player){
                     creature[1].levelup();
                     if(creature[0] instanceof Enemy){

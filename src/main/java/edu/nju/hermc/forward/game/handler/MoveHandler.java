@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 @Component
 @Sharable
 public class MoveHandler {
@@ -24,21 +27,20 @@ public class MoveHandler {
         World WORLD = World.getInstance();
 
         MoveCommand command = parser.readValue(parser.writeValueAsString(wrapper.getData()), MoveCommand.class);
-        command.setClientId(cl.id().asLongText());
+//        command.setClientId(cl.id().asLongText());
         if (WORLD.getPlayers().containsKey(cl.id().asLongText())) {
             String username = WORLD.getPlayers().get(cl.id().asLongText());
             Player player = (Player) WORLD.getCreatures().get(username);
             player.setX(command.getX());
             player.setY(command.getY());
             WORLD.getCreatures().put(username, player);
-        } else {
 
-        }
-
-        wrapper.setData(command);
-        for (Channel channel : WorldHandler.clients) {
-            if (channel.equals(cl)) continue;
-            channel.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+            command.setClientId(player.getObjectId());
+            wrapper.setData(command);
+            for (Channel channel : WorldHandler.clients) {
+                if (channel.equals(cl)) continue;
+                channel.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+            }
         }
     }
 

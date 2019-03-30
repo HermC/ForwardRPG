@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Sharable
@@ -66,6 +68,7 @@ public class AuthHandler {
         }
 
         BagInfo bagInfo = bagMapper.find(realUser.getUsername());
+        System.out.println(bagInfo.getPropLevel());
         Player player = PlayerFactory.getPlayer(realUser, bagInfo);
         WORLD.getCreatures().put(user.getUsername(), player);
         WORLD.getClients().put(user.getUsername(), cl.id().asLongText());
@@ -79,19 +82,20 @@ public class AuthHandler {
         World WORLD = World.getInstance();
 
         String career = (String) wrapper.getData();
-        Object userData = WORLD.getCreatures().get(cl.id().asLongText());
+        System.out.println(career);
+        String userData = WORLD.getPlayers().get(cl.id().asLongText());
         if (userData == null) {
             wrapper.setCode(Constants.AUTHORIZATION_FAIL);
             cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
             return;
         }
-        if (!(userData instanceof String)) {
-            wrapper.setCode(Constants.AUTHORIZATION_ACTIVE);
-            cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
-            return;
-        }
+//        if (!(userData instanceof String)) {
+//            wrapper.setCode(Constants.AUTHORIZATION_ACTIVE);
+//            cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+//            return;
+//        }
 
-        String username = (String) userData;
+        String username = userData;
         PlayerInfo info = PlayerFactory.getPlayerInfo(username, career);
         BagInfo bagInfo = new BagInfo();
         bagInfo.setUsername(username);
@@ -145,6 +149,14 @@ public class AuthHandler {
         WORLD.getCreatures().remove(username);
         WORLD.getPlayers().remove(cl.id().asLongText());
         WORLD.getClients().remove(username);
+
+        Command wrapper = new Command();
+        wrapper.setCode(Constants.LOGOUT);
+        wrapper.setData(player);
+        for (Channel c: WorldHandler.clients) {
+            if (c.equals(cl)) continue;
+            c.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
+        }
     }
 
 }

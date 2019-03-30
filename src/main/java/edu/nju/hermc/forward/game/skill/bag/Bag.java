@@ -41,6 +41,7 @@ public class Bag implements Serializable {
         int needCoin = nowLevel * 100;
         if(this.coin >= needCoin){
             this.myProp.setLevel(nowLevel + 1);
+            this.coin = this.coin - needCoin;
             return "升级成功，当前等级为" + String.valueOf(this.myProp.getLevel());
         }else {
             return "升级失败，金币不足";

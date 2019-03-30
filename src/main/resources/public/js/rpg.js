@@ -96,7 +96,7 @@
                 game.physics.startSystem(Phaser.Physics.ARCADE);
 
                 if (msg) {
-                    player = game.add.sprite(msg['data']['player']['x'], msg['data']['player']['y'], playerTexture);
+                    player = game.add.sprite(msg['data']['player']['x'] + 8, msg['data']['player']['y'] + 8, playerTexture);
                     player['objectId'] = msg['data']['player']['objectId'];
                 } else {
                     player = game.add.sprite(40 * scale, 8 * scale, playerTexture);
@@ -138,7 +138,16 @@
                 }
 
                 for(var i = 0; i < otherPlayers.length; i++) {
-                    game.physics.arcade.collide(player, otherPlayers[i]);
+                    game.physics.arcade.collide(player, otherPlayers[i], function(player, otherPlayer) {
+                      console.log(otherPlayer['clientId']);
+                        socket.send(JSON.stringify({
+                            code: 2001,
+                            data: {
+                                initiator: player['objectId'],
+                                target: otherPlayer['clientId']
+                            }
+                        }))
+                    });
                 }
 
                 player.body.velocity.x = 0;
@@ -233,7 +242,7 @@
                     // initPlayerState();
                     break;
                 case 4000:
-
+                    handlerStrengthen(msg);
                     break;
                 default:
                     break;
@@ -266,6 +275,14 @@
                 data: career
             }));
         });
+        $('#strengthen-weapon').on('click', function() {
+            socket.send(JSON.stringify({
+                code: 4000,
+                data: {
+                    username: player['objectId']
+                }
+            }));
+        });
     }
 
     function setPlayerGameState(state) {
@@ -275,6 +292,29 @@
         $('#player-game-state-hp').html(state['current_hp'] + '/' + state['hp']);
         $('#player-game-state-mp').html(state['current_mp'] + '/' + state['mp']);
         $('#player-game-state-ap').html(state['current_ap'] + '/' + state['ap']);
+
+        if (player) {
+            player.kill();
+            if (state) {
+                player = game.add.sprite(state['x'] + 8, state['y'] + 8, playerTexture);
+                player['objectId'] = state['objectId'];
+            } else {
+                player = game.add.sprite(40 * scale, 8 * scale, playerTexture);
+                player['objectId'] = 'player';
+            }
+            player.anchor.set(0.5);
+            game.physics.arcade.enable(player);
+            player.body.collideWorldBounds = true;
+            game.camera.follow(player);
+            cursors = game.input.keyboard.createCursorKeys();
+        }
+
+        setBag(state['bag']);
+    }
+
+    function setBag(bag) {
+        $('#coin').html(bag['coin']);
+        $('#prop').html(bag['myProp']['name'] + ' level ' + bag['myProp']['level']);
     }
 
     function handlerFight(msg) {
@@ -291,7 +331,8 @@
                 setHistory('不是你的回合!');
                 break;
             case 2005:
-
+                endFight(msg);
+                break;
         }
     }
 
@@ -302,6 +343,7 @@
         $('#fight-wrapper').show();
         $('#fight-wrapper').focus();
         setSkills(data['ourSide']['skillList']);
+        console.log(data);
         setEnemyState(data['otherSide']);
         setPlayerState(data['ourSide']);
         // cursors = null;
@@ -312,6 +354,9 @@
 
     function endFight(msg) {
         var data = msg['data'];
+        $('#fight-wrapper').hide();
+        setPlayerGameState(data['ourSide']);
+        isFighting = false;
     }
 
     function setFightInfo(msg) {
@@ -376,7 +421,7 @@
         $('#enemy-hp').html(state['current_hp'] + '/' + state['hp']);
         $('#enemy-mp').html(state['current_mp'] + '/' + state['mp']);
         $('#enemy-ap').html(state['current_ap'] + '/' + state['ap']);
-        $('#enemy-buff').html(state['buff']);
+        $('#enemy-buff').html(makeBuff(state['buff']));
     }
 
     function setPlayerState(state) {
@@ -385,7 +430,16 @@
         $('#player-hp').html(state['current_hp'] + '/' + state['hp']);
         $('#player-mp').html(state['current_mp'] + '/' + state['mp']);
         $('#player-ap').html(state['current_ap'] + '/' + state['ap']);
-        $('#player-buff').html(state['buff']);
+        $('#player-buff').html(makeBuff(state['buff']));
+    }
+
+    function makeBuff(buff) {
+        if (!buff) return '';
+        if (buff['nextBuff']) {
+            return buff['name'] + ', ' + makeBuff(buff['nextBuff']);
+        } else {
+            return buff['name'];
+        }
     }
 
     function chooseCareer(msg) {
@@ -404,7 +458,35 @@
                 $('#login').hide();
                 setPlayerGameState(msg['data']['player']);
                 break;
+            case 5:
+                logout(msg['data']);
             default:
+                break;
+        }
+    }
+
+    function logout(data) {
+        var index = -1;
+        for (var i = 0; i < otherPlayers.length; i++) {
+            if (otherPlayers[i]['clientId'] === data['objectId']) {
+                index = i;
+                break;
+            }
+        }
+        if (index !== -1) {
+            otherPlayers[index].kill();
+            otherPlayers.splice(index, 1);
+        }
+    }
+
+    function handlerStrengthen(msg) {
+        switch(msg['code']) {
+            case 4000:
+                alert(msg['data']['result']);
+                setPlayerGameState(msg['data']['player']);
+                break;
+            case 4001:
+                alert(msg['data']['result']);
                 break;
         }
     }
@@ -423,14 +505,14 @@
         }
         console.log(otherPlayer);
         if (otherPlayer === null) {
-            otherPlayer = game.add.sprite(x, y, otherPlayerTexture);
+            otherPlayer = game.add.sprite(x + 8, y + 8, otherPlayerTexture);
             otherPlayer.anchor.set(0.5);
             game.physics.arcade.enable(otherPlayer);
             otherPlayer.body.immovable = true;
             otherPlayer['clientId'] = clientId;
             otherPlayers.push(otherPlayer);
         } else {
-            otherPlayer.reset(x, y)
+            otherPlayer.reset(x + 8, y + 8)
         }
     }
 

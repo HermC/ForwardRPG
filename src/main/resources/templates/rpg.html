@@ -5,28 +5,156 @@
     <meta http-equiv="Content-Type" content="text/html">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
 
-    <style>
-        body {
-            margin: 0;
-        }
-        .container {
-            margin: auto;
-        }
-        .game {
-            width: 800px;
-            height: 800px;
-            margin: auto;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" href="js/bootstrap/dist/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="css/rpg.css">
 
     <title>RPG</title>
 </head>
 <body>
 <div class="container">
-    <div class="game" id="game"></div>
+    <div class="game-state" id="game-wrapper">
+        <div class="game" id="game"></div>
+        <div id="game-state">
+            <div id="player-game-state">
+                <div class="state">
+                    <span>名称:</span><span id="player-game-state-name"></span>
+                </div>
+                <div class="state">
+                    <span>职业:</span><span id="player-game-state-career"></span>
+                </div>
+                <div class="state">
+                    <span>Level:</span><span id="player-game-state-level"></span>
+                </div>
+                <div class="state">
+                    <span>HP:</span><span id="player-game-state-hp"></span>
+                </div>
+                <div class="state">
+                    <span>MP:</span><span id="player-game-state-mp"></span>
+                </div>
+                <div class="state">
+                    <span>AP:</span><span id="player-game-state-ap"></span>
+                </div>
+            </div>
+            <div id="bag-wrapper">
+                <div class="bag-item">
+                    <strong>背包:</strong>
+                </div>
+                <div class="bag-item">
+                    <span>金币:</span><span id="coin">100</span>
+                </div>
+                <div class="bag-item">
+                    <span>物品:</span><span id="prop" style="flex: 3"></span>
+                </div>
+                <button id="strengthen-weapon" type="button" class="btn" style="margin-left: 70px">升级武器</button>
+            </div>
+        </div>
+    </div>
+    <div id="login">
+        <div class="login-wrapper">
+            <h3>RPG</h3>
+            <br>
+            <div id="login_form" class="form-horizontal">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">角色名: </label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="username" placeholder="Username">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <button id="login_submit" type="button" class="btn btn-primary" style="float: right">启动</button>
+                    </div>
+                </div>
+            </div>
+            <div id="choose_career_form" class="form-horizontal" style="display: none">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">选择职业: </label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="career">
+                            <option value="warrior">战士</option>
+                            <option value="maga">法师</option>
+                            <option value="assassin">刺客</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <button id="choose_submit" type="button" class="btn btn-primary" style="float: right">创建</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="game-state" id="fight-wrapper" style="display: none">
+        <div class="fight" id="fight">
+            <!--<button type="button" id="fight-close">close</button>-->
+            <div id="history-wrapper">
+                <h4 class="badge badge-secondary">战斗历史: </h4>
+                <div id="history">
+
+                </div>
+            </div>
+            <div id="skills-wrapper">
+                <div class="skill" id="skill1">
+                    技能1
+                </div>
+                <div class="skill" id="skill2">
+                    技能2
+                </div>
+                <div class="skill" id="skill3">
+                    技能3
+                </div>
+            </div>
+        </div>
+        <div id="fight-state">
+            <div id="enemy-state">
+                <div class="state">
+                    <span>名称:</span><span id="enemy-name"></span>
+                </div>
+                <div class="state">
+                    <span>职业:</span><span id="enemy-career"></span>
+                </div>
+                <div class="state">
+                    <span>HP:</span><span id="enemy-hp"></span>
+                </div>
+                <div class="state">
+                    <span>MP:</span><span id="enemy-mp"></span>
+                </div>
+                <div class="state">
+                    <span>AP:</span><span id="enemy-ap"></span>
+                </div>
+                <div class="state">
+                    <span>Buff:</span><span id="enemy-buff"></span>
+                </div>
+            </div>
+            <div id="player-state">
+                <div class="state">
+                    <span>名称:</span><span id="player-name"></span>
+                </div>
+                <div class="state">
+                    <span>职业:</span><span id="player-career"></span>
+                </div>
+                <div class="state">
+                    <span>HP:</span><span id="player-hp"></span>
+                </div>
+                <div class="state">
+                    <span>MP:</span><span id="player-mp"></span>
+                </div>
+                <div class="state">
+                    <span>AP:</span><span id="player-ap"></span>
+                </div>
+                <div class="state">
+                    <span>Buff:</span><span id="player-buff"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<script type="application/javascript" src="/js/phaser2/dist/custom/pixi.min.js"></script>
-<script type="application/javascript" src="/js/phaser2/dist/phaser.min.js"></script>
-<script type="application/javascript" src="/js/rpg.js"></script>
+<script type="application/javascript" src="js/jquery/dist/jquery.min.js"></script>
+<script type="application/javascript" src="js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="application/javascript" src="js/phaser2/dist/phaser.js"></script>
+<script type="application/javascript" src="js/rpg.js"></script>
 </body>
 </html>

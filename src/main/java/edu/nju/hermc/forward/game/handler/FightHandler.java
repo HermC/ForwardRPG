@@ -17,7 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Sharable
@@ -184,6 +186,8 @@ public class FightHandler {
                 cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
             }
         } else {
+            wrapper.setData(result);
+
             wrapper.setCode(Constants.FIGHT_ACTING);
             cl.writeAndFlush(new TextWebSocketFrame(parser.writeValueAsString(wrapper)));
 
@@ -208,6 +212,10 @@ public class FightHandler {
         c.setCurrent_hp(c.getHp());
         c.setCurrent_mp(c.getMp());
         c.setCurrent_ap(c.getAp());
+
+        c.setBuff(null);
+
+        c.getState().doFightEnd(c);
 
         WORLD.getCreatures().put(c.getObjectId(), c);
     }
